@@ -57,7 +57,7 @@ resource "aws_iam_role" "autoscaler" {
 EOF
 }
 
-resource "aws_iam_role_policy" "autoscaler_dynamo" {
+resource "aws_iam_role_policy" "autoscaler" {
   name = "${module.dynamo_label.id}-autoscaler-dynamo"
   role = "${aws_iam_role.autoscaler.id}"
 
