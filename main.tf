@@ -40,64 +40,69 @@ resource "aws_dynamodb_table" "default" {
 }
 
 // Autoscaler scales up/down the provisioned ops for DynamoDB table based on the load
-resource "aws_iam_role" "autoscaler" {
-  name = "${module.dynamo_label.id}-autoscaler"
+data "aws_iam_policy_document" "assume_role" {
+  statement {
+    sid = ""
 
-  assume_role_policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Principal": {"Service": "application-autoscaling.amazonaws.com"},
-            "Action": "sts:AssumeRole"
-        }
+    actions = [
+      "sts:AssumeRole",
     ]
+
+    principals {
+      type        = "Service"
+      identifiers = ["application-autoscaling.amazonaws.com"]
+    }
+
+    effect = "Allow"
+  }
 }
-EOF
+
+resource "aws_iam_role" "autoscaler" {
+  name               = "${module.dynamo_label.id}-autoscaler"
+  assume_role_policy = "${data.aws_iam_policy_document.assume_role.json}"
+}
+
+data "aws_iam_policy_document" "autoscaler" {
+  statement {
+    sid = ""
+
+    actions = [
+      "dynamodb:DescribeTable",
+      "dynamodb:UpdateTable",
+    ]
+
+    resources = ["arn:aws:dynamodb:${var.region}:${data.aws_caller_identity.current.account_id}:table/${module.dynamo_label.id}"]
+
+    effect = "Allow"
+  }
 }
 
 resource "aws_iam_role_policy" "autoscaler" {
-  name = "${module.dynamo_label.id}-autoscaler-dynamo"
-  role = "${aws_iam_role.autoscaler.id}"
-
-  policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "dynamodb:DescribeTable",
-                "dynamodb:UpdateTable"
-            ],
-            "Resource": "arn:aws:dynamodb:${var.region}:${data.aws_caller_identity.current.account_id}:table/${module.dynamo_label.id}"
-        }
-    ]
+  name   = "${module.dynamo_label.id}-autoscaler-dynamo"
+  role   = "${aws_iam_role.autoscaler.id}"
+  policy = "${data.aws_iam_policy_document.autoscaler.json}"
 }
-EOF
+
+data "aws_iam_policy_document" "autoscaler_cloudwatch" {
+  statement {
+    sid = ""
+
+    actions = [
+      "cloudwatch:PutMetricAlarm",
+      "cloudwatch:DescribeAlarms",
+      "cloudwatch:DeleteAlarms",
+    ]
+
+    resources = ["*"]
+
+    effect = "Allow"
+  }
 }
 
 resource "aws_iam_role_policy" "autoscaler_cloudwatch" {
-  name = "${module.dynamo_label.id}-autoscaler-cloudwatch"
-  role = "${aws_iam_role.autoscaler.id}"
-
-  policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "cloudwatch:PutMetricAlarm",
-                "cloudwatch:DescribeAlarms",
-                "cloudwatch:DeleteAlarms"
-            ],
-            "Resource": "*"
-        }
-    ]
-}
-EOF
+  name   = "${module.dynamo_label.id}-autoscaler-cloudwatch"
+  role   = "${aws_iam_role.autoscaler.id}"
+  policy = "${data.aws_iam_policy_document.autoscaler_cloudwatch.json}"
 }
 
 resource "aws_appautoscaling_target" "read_target" {
