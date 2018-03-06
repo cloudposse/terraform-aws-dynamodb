@@ -1,6 +1,6 @@
 data "aws_caller_identity" "current" {}
 
-module "dynamo_label" {
+module "default" {
   source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.3.3"
   namespace  = "${var.namespace}"
   stage      = "${var.stage}"
@@ -11,7 +11,7 @@ module "dynamo_label" {
 }
 
 resource "aws_dynamodb_table" "default" {
-  name           = "${module.dynamo_label.id}"
+  name           = "${module.default.id}"
   read_capacity  = "${var.autoscale_min_read_capacity}"
   write_capacity = "${var.autoscale_min_write_capacity}"
   hash_key       = "${var.hash_key}"
@@ -36,7 +36,7 @@ resource "aws_dynamodb_table" "default" {
     enabled        = true
   }
 
-  tags = "${module.dynamo_label.tags}"
+  tags = "${module.default.tags}"
 }
 
 // Autoscaler scales up/down the provisioned ops for DynamoDB table based on the load
@@ -58,7 +58,7 @@ data "aws_iam_policy_document" "assume_role" {
 }
 
 resource "aws_iam_role" "autoscaler" {
-  name               = "${module.dynamo_label.id}-autoscaler"
+  name               = "${module.default.id}-autoscaler"
   assume_role_policy = "${data.aws_iam_policy_document.assume_role.json}"
 }
 
@@ -71,14 +71,14 @@ data "aws_iam_policy_document" "autoscaler" {
       "dynamodb:UpdateTable",
     ]
 
-    resources = ["arn:aws:dynamodb:${var.region}:${data.aws_caller_identity.current.account_id}:table/${module.dynamo_label.id}"]
+    resources = ["arn:aws:dynamodb:${var.region}:${data.aws_caller_identity.current.account_id}:table/${module.default.id}"]
 
     effect = "Allow"
   }
 }
 
 resource "aws_iam_role_policy" "autoscaler" {
-  name   = "${module.dynamo_label.id}-autoscaler-dynamo"
+  name   = "${module.default.id}-autoscaler-dynamo"
   role   = "${aws_iam_role.autoscaler.id}"
   policy = "${data.aws_iam_policy_document.autoscaler.json}"
 }
@@ -100,7 +100,7 @@ data "aws_iam_policy_document" "autoscaler_cloudwatch" {
 }
 
 resource "aws_iam_role_policy" "autoscaler_cloudwatch" {
-  name   = "${module.dynamo_label.id}-autoscaler-cloudwatch"
+  name   = "${module.default.id}-autoscaler-cloudwatch"
   role   = "${aws_iam_role.autoscaler.id}"
   policy = "${data.aws_iam_policy_document.autoscaler_cloudwatch.json}"
 }
@@ -108,7 +108,7 @@ resource "aws_iam_role_policy" "autoscaler_cloudwatch" {
 resource "aws_appautoscaling_target" "read_target" {
   max_capacity       = "${var.autoscale_max_read_capacity}"
   min_capacity       = "${var.autoscale_min_read_capacity}"
-  resource_id        = "table/${module.dynamo_label.id}"
+  resource_id        = "table/${module.default.id}"
   role_arn           = "${aws_iam_role.autoscaler.arn}"
   scalable_dimension = "dynamodb:table:ReadCapacityUnits"
   service_namespace  = "dynamodb"
@@ -133,7 +133,7 @@ resource "aws_appautoscaling_policy" "read_policy" {
 resource "aws_appautoscaling_target" "write_target" {
   max_capacity       = "${var.autoscale_max_write_capacity}"
   min_capacity       = "${var.autoscale_min_write_capacity}"
-  resource_id        = "table/${module.dynamo_label.id}"
+  resource_id        = "table/${module.default.id}"
   role_arn           = "${aws_iam_role.autoscaler.arn}"
   scalable_dimension = "dynamodb:table:WriteCapacityUnits"
   service_namespace  = "dynamodb"
