@@ -71,7 +71,7 @@ data "aws_iam_policy_document" "autoscaler" {
       "dynamodb:UpdateTable",
     ]
 
-    resources = ["arn:aws:dynamodb:${var.region}:${data.aws_caller_identity.current.account_id}:table/${module.default.id}"]
+    resources = ["${aws_dynamodb_table.default.arn}"]
 
     effect = "Allow"
   }
