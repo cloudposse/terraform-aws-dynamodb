@@ -78,7 +78,7 @@ data "aws_iam_policy_document" "autoscaler" {
 }
 
 resource "aws_iam_role_policy" "autoscaler" {
-  name   = "${module.default.id}-autoscaler-dynamo"
+  name   = "${module.default.id}-autoscaler-dynamodb"
   role   = "${aws_iam_role.autoscaler.id}"
   policy = "${data.aws_iam_policy_document.autoscaler.json}"
 }
