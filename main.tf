@@ -71,14 +71,14 @@ data "aws_iam_policy_document" "autoscaler" {
       "dynamodb:UpdateTable",
     ]
 
-    resources = ["arn:aws:dynamodb:${var.region}:${data.aws_caller_identity.current.account_id}:table/${module.default.id}"]
+    resources = ["${aws_dynamodb_table.default.arn}"]
 
     effect = "Allow"
   }
 }
 
 resource "aws_iam_role_policy" "autoscaler" {
-  name   = "${module.default.id}-autoscaler-dynamo"
+  name   = "${module.default.id}-autoscaler-dynamodb"
   role   = "${aws_iam_role.autoscaler.id}"
   policy = "${data.aws_iam_policy_document.autoscaler.json}"
 }
@@ -105,11 +105,15 @@ resource "aws_iam_role_policy" "autoscaler_cloudwatch" {
   policy = "${data.aws_iam_policy_document.autoscaler_cloudwatch.json}"
 }
 
+data "aws_iam_role" "autoscale_service" {
+  name = "AWSServiceRoleForApplicationAutoScaling_DynamoDBTable"
+}
+
 resource "aws_appautoscaling_target" "read_target" {
   max_capacity       = "${var.autoscale_max_read_capacity}"
   min_capacity       = "${var.autoscale_min_read_capacity}"
   resource_id        = "table/${module.default.id}"
-  role_arn           = "${aws_iam_role.autoscaler.arn}"
+  role_arn           = "${data.aws_iam_role.autoscale_service.arn}"
   scalable_dimension = "dynamodb:table:ReadCapacityUnits"
   service_namespace  = "dynamodb"
 }
@@ -134,7 +138,7 @@ resource "aws_appautoscaling_target" "write_target" {
   max_capacity       = "${var.autoscale_max_write_capacity}"
   min_capacity       = "${var.autoscale_min_write_capacity}"
   resource_id        = "table/${module.default.id}"
-  role_arn           = "${aws_iam_role.autoscaler.arn}"
+  role_arn           = "${data.aws_iam_role.autoscale_service.arn}"
   scalable_dimension = "dynamodb:table:WriteCapacityUnits"
   service_namespace  = "dynamodb"
 }
