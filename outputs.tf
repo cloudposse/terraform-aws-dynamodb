@@ -1,3 +1,7 @@
+output "table_name" {
+  value = "${aws_dynamodb_table.default.name}"
+}
+
 output "table_id" {
   value = "${aws_dynamodb_table.default.id}"
 }
