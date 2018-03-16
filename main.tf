@@ -18,7 +18,7 @@ resource "aws_dynamodb_table" "default" {
   range_key      = "${var.range_key}"
 
   server_side_encryption {
-    enabled = "true"
+    enabled = "${var.enable_encryption}"
   }
 
   lifecycle {
