@@ -17,6 +17,10 @@ resource "aws_dynamodb_table" "default" {
   hash_key       = "${var.hash_key}"
   range_key      = "${var.range_key}"
 
+  server_side_encryption {
+    enabled = "true"
+  }
+
   lifecycle {
     ignore_changes = ["read_capacity", "write_capacity"]
   }
