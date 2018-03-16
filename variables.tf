@@ -10,6 +10,10 @@ variable "stage" {
   type = "string"
 }
 
+variable "enable_encryption" {
+  default = "true"
+}
+
 variable "attributes" {
   type    = "list"
   default = []
