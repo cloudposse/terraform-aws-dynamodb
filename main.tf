@@ -112,7 +112,7 @@ resource "aws_iam_role_policy" "autoscaler_cloudwatch" {
 resource "aws_appautoscaling_target" "read_target" {
   max_capacity       = "${var.autoscale_max_read_capacity}"
   min_capacity       = "${var.autoscale_min_read_capacity}"
-  resource_id        = "table/${module.default.id}"
+  resource_id        = "table/${aws_dynamodb_table.default.name}"
   scalable_dimension = "dynamodb:table:ReadCapacityUnits"
   service_namespace  = "dynamodb"
 }
@@ -136,7 +136,7 @@ resource "aws_appautoscaling_policy" "read_policy" {
 resource "aws_appautoscaling_target" "write_target" {
   max_capacity       = "${var.autoscale_max_write_capacity}"
   min_capacity       = "${var.autoscale_min_write_capacity}"
-  resource_id        = "table/${module.default.id}"
+  resource_id        = "table/${aws_dynamodb_table.default.name}"
   scalable_dimension = "dynamodb:table:WriteCapacityUnits"
   service_namespace  = "dynamodb"
 }
