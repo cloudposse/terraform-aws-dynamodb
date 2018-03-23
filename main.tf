@@ -1,6 +1,4 @@
-data "aws_caller_identity" "current" {}
-
-module "default" {
+module "dynamodb_label" {
   source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.3.3"
   namespace  = "${var.namespace}"
   stage      = "${var.stage}"
@@ -11,7 +9,7 @@ module "default" {
 }
 
 resource "aws_dynamodb_table" "default" {
-  name           = "${module.default.id}"
+  name           = "${module.dynamodb_label.id}"
   read_capacity  = "${var.autoscale_min_read_capacity}"
   write_capacity = "${var.autoscale_min_write_capacity}"
   hash_key       = "${var.hash_key}"
@@ -40,119 +38,22 @@ resource "aws_dynamodb_table" "default" {
     enabled        = true
   }
 
-  tags = "${module.default.tags}"
+  tags = "${module.dynamodb_label.tags}"
 }
 
-// Autoscaler scales up/down the provisioned ops for DynamoDB table based on the load
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    sid = ""
-
-    actions = [
-      "sts:AssumeRole",
-    ]
-
-    principals {
-      type        = "Service"
-      identifiers = ["application-autoscaling.amazonaws.com"]
-    }
-
-    effect = "Allow"
-  }
-}
-
-resource "aws_iam_role" "autoscaler" {
-  name               = "${module.default.id}-autoscaler"
-  assume_role_policy = "${data.aws_iam_policy_document.assume_role.json}"
-}
-
-data "aws_iam_policy_document" "autoscaler" {
-  statement {
-    sid = ""
-
-    actions = [
-      "dynamodb:DescribeTable",
-      "dynamodb:UpdateTable",
-    ]
-
-    resources = ["${aws_dynamodb_table.default.arn}"]
-
-    effect = "Allow"
-  }
-}
-
-resource "aws_iam_role_policy" "autoscaler" {
-  name   = "${module.default.id}-autoscaler-dynamodb"
-  role   = "${aws_iam_role.autoscaler.id}"
-  policy = "${data.aws_iam_policy_document.autoscaler.json}"
-}
-
-data "aws_iam_policy_document" "autoscaler_cloudwatch" {
-  statement {
-    sid = ""
-
-    actions = [
-      "cloudwatch:PutMetricAlarm",
-      "cloudwatch:DescribeAlarms",
-      "cloudwatch:DeleteAlarms",
-    ]
-
-    resources = ["*"]
-
-    effect = "Allow"
-  }
-}
-
-resource "aws_iam_role_policy" "autoscaler_cloudwatch" {
-  name   = "${module.default.id}-autoscaler-cloudwatch"
-  role   = "${aws_iam_role.autoscaler.id}"
-  policy = "${data.aws_iam_policy_document.autoscaler_cloudwatch.json}"
-}
-
-resource "aws_appautoscaling_target" "read_target" {
-  max_capacity       = "${var.autoscale_max_read_capacity}"
-  min_capacity       = "${var.autoscale_min_read_capacity}"
-  resource_id        = "table/${aws_dynamodb_table.default.name}"
-  scalable_dimension = "dynamodb:table:ReadCapacityUnits"
-  service_namespace  = "dynamodb"
-}
-
-resource "aws_appautoscaling_policy" "read_policy" {
-  name               = "DynamoDBReadCapacityUtilization:${aws_appautoscaling_target.read_target.resource_id}"
-  policy_type        = "TargetTrackingScaling"
-  resource_id        = "${aws_appautoscaling_target.read_target.resource_id}"
-  scalable_dimension = "${aws_appautoscaling_target.read_target.scalable_dimension}"
-  service_namespace  = "${aws_appautoscaling_target.read_target.service_namespace}"
-
-  target_tracking_scaling_policy_configuration {
-    predefined_metric_specification {
-      predefined_metric_type = "DynamoDBReadCapacityUtilization"
-    }
-
-    target_value = "${var.autoscale_read_target}"
-  }
-}
-
-resource "aws_appautoscaling_target" "write_target" {
-  max_capacity       = "${var.autoscale_max_write_capacity}"
-  min_capacity       = "${var.autoscale_min_write_capacity}"
-  resource_id        = "table/${aws_dynamodb_table.default.name}"
-  scalable_dimension = "dynamodb:table:WriteCapacityUnits"
-  service_namespace  = "dynamodb"
-}
-
-resource "aws_appautoscaling_policy" "write_policy" {
-  name               = "DynamoDBWriteCapacityUtilization:${aws_appautoscaling_target.write_target.resource_id}"
-  policy_type        = "TargetTrackingScaling"
-  resource_id        = "${aws_appautoscaling_target.write_target.resource_id}"
-  scalable_dimension = "${aws_appautoscaling_target.write_target.scalable_dimension}"
-  service_namespace  = "${aws_appautoscaling_target.write_target.service_namespace}"
-
-  target_tracking_scaling_policy_configuration {
-    predefined_metric_specification {
-      predefined_metric_type = "DynamoDBWriteCapacityUtilization"
-    }
-
-    target_value = "${var.autoscale_write_target}"
-  }
+module "dynamodb_autoscaler" {
+  source                       = "git::https://github.com/cloudposse/terraform-aws-dynamodb-autoscaler.git?ref=tags/0.1.0"
+  namespace                    = "${var.namespace}"
+  stage                        = "${var.stage}"
+  name                         = "${var.name}"
+  delimiter                    = "${var.delimiter}"
+  attributes                   = "${var.attributes}"
+  dynamodb_table_name          = "${aws_dynamodb_table.default.id}"
+  dynamodb_table_arn           = "${aws_dynamodb_table.default.arn}"
+  autoscale_write_target       = "${var.autoscale_write_target}"
+  autoscale_read_target        = "${var.autoscale_read_target}"
+  autoscale_min_read_capacity  = "${var.autoscale_min_read_capacity}"
+  autoscale_max_read_capacity  = "${var.autoscale_max_read_capacity}"
+  autoscale_min_write_capacity = "${var.autoscale_min_write_capacity}"
+  autoscale_max_write_capacity = "${var.autoscale_max_write_capacity}"
 }
