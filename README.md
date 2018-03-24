@@ -21,6 +21,7 @@ module "dynamodb_table" {
   autoscale_max_read_capacity  = 20
   autoscale_min_write_capacity = 5
   autoscale_max_write_capacity = 20
+  enable_autoscaler            = "true"
 }
 ```
 
@@ -45,6 +46,7 @@ module "dynamodb_table" {
 | `autoscale_max_read_capacity`   | `20`         | DynamoDB autoscaling max read capacity                                         | No       |
 | `autoscale_min_write_capacity`  | `5`          | DynamoDB autoscaling min write capacity                                        | No       |
 | `autoscale_max_write_capacity`  | `20`         | DynamoDB autoscaling max write capacity                                        | No       |
+| `enable_autoscaler`             | `true`       | Flag to enable/disable DynamoDB autoscaling                                    | No       |
 
 
 ## Outputs

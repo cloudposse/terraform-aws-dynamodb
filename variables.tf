@@ -82,3 +82,9 @@ variable "ttl_attribute" {
   default     = "Expires"
   description = "DynamoDB table TTL attribute"
 }
+
+variable "enable_autoscaler" {
+  type        = "string"
+  default     = "true"
+  description = "Flag to enable/disable DynamoDB autoscaling"
+}
