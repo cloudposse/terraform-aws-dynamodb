@@ -9,20 +9,17 @@ module "dynamodb_label" {
 }
 
 locals {
-
-attributes = [{
+  attributes = [{
     name = "${var.hash_key}"
     type = "S"
-  }, {
-    name = "${var.range_key}"
-    type = "S"
   },
- "${var.dynamodb_attributes}"]
-
+    {
+      name = "${var.range_key}"
+      type = "S"
+    },
+    "${var.dynamodb_attributes}",
+  ]
 }
-
-
-
 
 resource "aws_dynamodb_table" "default" {
   name           = "${module.dynamodb_label.id}"
@@ -39,7 +36,7 @@ resource "aws_dynamodb_table" "default" {
     ignore_changes = ["read_capacity", "write_capacity"]
   }
 
-  attribute = ["${local.attributes}"]
+  attribute              = ["${local.attributes}"]
   global_secondary_index = ["${var.global_secondary_index_map}"]
 
   ttl {
