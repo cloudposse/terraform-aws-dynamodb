@@ -94,15 +94,16 @@ module "dynamodb_table" {
 | `autoscale_min_write_capacity`  | `5`          | DynamoDB autoscaling min write capacity                                        | No       |
 | `autoscale_max_write_capacity`  | `20`         | DynamoDB autoscaling max write capacity                                        | No       |
 | `enable_autoscaler`             | `true`       | Flag to enable/disable DynamoDB autoscaling                                    | No       |
-| `dynamodb_attributes`           | `[]`         | List of maps, that describe extra dynamodb attributes                          | No       |
+| `dynamodb_attributes`           | `[]`         | List of maps, that describe extra DynamoDB attributes                          | No       |
 | `global_secondary_index_map`    | `[]`         | List of maps, that describes additional secondary index properties             | No       |
 
 
-## A note about dynamodb attributes
+## A note about DynamoDB attributes
 Only define attributes on the table object that are going to be used as:
 
 * Table hash key or range key
 * LSI or GSI hash key or range key
+
 The DynamoDB API expects attribute structure (name and type) to be passed along when creating or updating GSI/LSIs or creating the initial table. In these cases it expects the Hash / Range keys to be provided; because these get re-used in numerous places (i.e the table's range key could be a part of one or more GSIs), they are stored on the table object to prevent duplication and increase consistency. If you add attributes here that are not used in these scenarios it can cause an infinite loop in planning.
 
 Additional details see [dynamodb_table](https://www.terraform.io/docs/providers/aws/r/dynamodb_table.html)
