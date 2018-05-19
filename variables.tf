@@ -88,3 +88,15 @@ variable "enable_autoscaler" {
   default     = "true"
   description = "Flag to enable/disable DynamoDB autoscaling"
 }
+
+variable "dynamodb_attributes" {
+  type        = "list"
+  default     = []
+  description = "Additional dynamodb attributes in the form of a list of mapped values"
+}
+
+variable "global_secondary_index_map" {
+  type        = "list"
+  default     = []
+  description = "Additional global secondary indexes in the form of a list of mapped values"
+}

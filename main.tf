@@ -1,11 +1,24 @@
 module "dynamodb_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.3.3"
+  source     = "git::https://github.com/cloudposse/terraform-terraform-label.git?ref=tags/0.1.2"
   namespace  = "${var.namespace}"
   stage      = "${var.stage}"
   name       = "${var.name}"
   delimiter  = "${var.delimiter}"
   attributes = "${var.attributes}"
   tags       = "${var.tags}"
+}
+
+locals {
+  attributes = [{
+    name = "${var.hash_key}"
+    type = "S"
+  },
+    {
+      name = "${var.range_key}"
+      type = "S"
+    },
+    "${var.dynamodb_attributes}",
+  ]
 }
 
 resource "aws_dynamodb_table" "default" {
@@ -23,15 +36,8 @@ resource "aws_dynamodb_table" "default" {
     ignore_changes = ["read_capacity", "write_capacity"]
   }
 
-  attribute {
-    name = "${var.hash_key}"
-    type = "S"
-  }
-
-  attribute {
-    name = "${var.range_key}"
-    type = "S"
-  }
+  attribute              = ["${local.attributes}"]
+  global_secondary_index = ["${var.global_secondary_index_map}"]
 
   ttl {
     attribute_name = "${var.ttl_attribute}"

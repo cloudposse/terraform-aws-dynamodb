@@ -25,6 +25,53 @@ module "dynamodb_table" {
 }
 ```
 
+## Advanced Usage - with additional attributes and indexes
+
+```hcl
+module "dynamodb_table" {
+  source                       = "git::https://github.com/cloudposse/terraform-aws-dynamodb.git?ref=master"
+  namespace                    = "cp"
+  stage                        = "dev"
+  name                         = "cluster"
+  hash_key                     = "HashKey"
+  range_key                    = "RangeKey"
+  autoscale_write_target       = 10
+  autoscale_read_target        = 10
+  autoscale_min_read_capacity  = 5
+  autoscale_max_read_capacity  = 20
+  autoscale_min_write_capacity = 5
+  autoscale_max_write_capacity = 20
+  enable_autoscaler            = "true"
+
+  dynamodb_attributes          = [
+      {
+        name = "DailyAverage"
+        type = "N"
+      },
+      {
+        name = "HighWater"
+        type = "N"
+      }
+    ]
+
+  global_secondary_index_map   = [
+      {
+        name               = "DailyAverageIndex"
+        hash_key           = "DailyAverage"
+        write_capacity     = 10
+        read_capacity      = 10
+        projection_type    = "KEYS_ONLY"
+      },
+      {
+        name               = "HighWaterIndex"
+        hash_key           = "HighWater"
+        write_capacity     = 10
+        read_capacity      = 10
+        projection_type    = "KEYS_ONLY"
+      }
+  ]
+}
+```
 
 ## Variables
 
@@ -47,7 +94,19 @@ module "dynamodb_table" {
 | `autoscale_min_write_capacity`  | `5`          | DynamoDB autoscaling min write capacity                                        | No       |
 | `autoscale_max_write_capacity`  | `20`         | DynamoDB autoscaling max write capacity                                        | No       |
 | `enable_autoscaler`             | `true`       | Flag to enable/disable DynamoDB autoscaling                                    | No       |
+| `dynamodb_attributes`           | `[]`         | List of maps, that describe extra DynamoDB attributes                          | No       |
+| `global_secondary_index_map`    | `[]`         | List of maps, that describes additional secondary index properties             | No       |
 
+
+## A note about DynamoDB attributes
+Only define attributes on the table object that are going to be used as:
+
+* Table hash key or range key
+* LSI or GSI hash key or range key
+
+The DynamoDB API expects attribute structure (name and type) to be passed along when creating or updating GSI/LSIs or creating the initial table. In these cases it expects the Hash / Range keys to be provided; because these get re-used in numerous places (i.e the table's range key could be a part of one or more GSIs), they are stored on the table object to prevent duplication and increase consistency. If you add attributes here that are not used in these scenarios it can cause an infinite loop in planning.
+
+Additional details see [dynamodb_table](https://www.terraform.io/docs/providers/aws/r/dynamodb_table.html)
 
 ## Outputs
 
