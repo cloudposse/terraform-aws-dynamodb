@@ -15,8 +15,8 @@ module "dynamodb_table" {
   name                         = "cluster"
   hash_key                     = "HashKey"
   range_key                    = "RangeKey"
-  autoscale_write_target       = 10
-  autoscale_read_target        = 10
+  autoscale_write_target       = 50
+  autoscale_read_target        = 50
   autoscale_min_read_capacity  = 5
   autoscale_max_read_capacity  = 20
   autoscale_min_write_capacity = 5
@@ -35,8 +35,8 @@ module "dynamodb_table" {
   name                         = "cluster"
   hash_key                     = "HashKey"
   range_key                    = "RangeKey"
-  autoscale_write_target       = 10
-  autoscale_read_target        = 10
+  autoscale_write_target       = 50
+  autoscale_read_target        = 50
   autoscale_min_read_capacity  = 5
   autoscale_max_read_capacity  = 20
   autoscale_min_write_capacity = 5
@@ -87,8 +87,8 @@ module "dynamodb_table" {
 | `attributes`                    | `[]`         | Additional attributes (_e.g._ `policy` or `role`)                              | No       |
 | `tags`                          | `{}`         | Additional tags  (_e.g._ `map("BusinessUnit","XYZ")`                           | No       |
 | `delimiter`                     | `-`          | Delimiter to be used between `namespace`, `stage`, `name`, and `attributes`    | No       |
-| `autoscale_write_target`        | `10`         | The target value for DynamoDB write autoscaling                                | No       |
-| `autoscale_read_target`         | `10`         | The target value for DynamoDB read autoscaling                                 | No       |
+| `autoscale_write_target`        | `50`         | The target value (in %) for DynamoDB write autoscaling                         | No       |
+| `autoscale_read_target`         | `50`         | The target value (in %) for DynamoDB read autoscaling                          | No       |
 | `autoscale_min_read_capacity`   | `5`          | DynamoDB autoscaling min read capacity                                         | No       |
 | `autoscale_max_read_capacity`   | `20`         | DynamoDB autoscaling max read capacity                                         | No       |
 | `autoscale_min_write_capacity`  | `5`          | DynamoDB autoscaling min write capacity                                        | No       |
@@ -99,6 +99,7 @@ module "dynamodb_table" {
 
 
 ## A note about DynamoDB attributes
+
 Only define attributes on the table object that are going to be used as:
 
 * Table hash key or range key

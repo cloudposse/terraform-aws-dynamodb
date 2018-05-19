@@ -32,13 +32,13 @@ variable "tags" {
 }
 
 variable "autoscale_write_target" {
-  default     = 10
-  description = "The target value for DynamoDB write autoscaling"
+  default     = 50
+  description = "The target value (in %) for DynamoDB write autoscaling"
 }
 
 variable "autoscale_read_target" {
-  default     = 10
-  description = "The target value for DynamoDB read autoscaling"
+  default     = 50
+  description = "The target value (in %) for DynamoDB read autoscaling"
 }
 
 variable "autoscale_min_read_capacity" {
@@ -92,7 +92,7 @@ variable "enable_autoscaler" {
 variable "dynamodb_attributes" {
   type        = "list"
   default     = []
-  description = "Additional dynamodb attributes in the form of a list of mapped values"
+  description = "Additional DynamoDB attributes in the form of a list of mapped values"
 }
 
 variable "global_secondary_index_map" {
