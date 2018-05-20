@@ -90,13 +90,41 @@ variable "enable_autoscaler" {
 }
 
 variable "dynamodb_attributes" {
-  type        = "list"
-  default     = []
+  type = "list"
+
+  default = [
+    {
+      name = "DailyAverage"
+      type = "N"
+    },
+    {
+      name = "HighWater"
+      type = "N"
+    },
+  ]
+
   description = "Additional DynamoDB attributes in the form of a list of mapped values"
 }
 
 variable "global_secondary_index_map" {
-  type        = "list"
-  default     = []
+  type = "list"
+
+  default = [
+    {
+      name            = "DailyAverageIndex"
+      hash_key        = "DailyAverage"
+      write_capacity  = 10
+      read_capacity   = 10
+      projection_type = "KEYS_ONLY"
+    },
+    {
+      name            = "HighWaterIndex"
+      hash_key        = "HighWater"
+      write_capacity  = 10
+      read_capacity   = 10
+      projection_type = "KEYS_ONLY"
+    },
+  ]
+
   description = "Additional global secondary indexes in the form of a list of mapped values"
 }

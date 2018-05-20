@@ -188,8 +188,8 @@ or [hire us][hire] to help build your next cloud-platform.
   [community]: https://github.com/cloudposse/
   [hire]: http://cloudposse.com/contact/
 
-### Contributors
 
+## Contributors
 
 | [![Erik Osterman][erik_img]][erik_web]<br/>[Erik Osterman][erik_web] | [![Andriy Knysh][andriy_img]][andriy_web]<br/>[Andriy Knysh][andriy_web] |
 |-------------------------------------------------------|------------------------------------------------------------------|
