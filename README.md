@@ -58,15 +58,15 @@ module "dynamodb_table" {
       {
         name               = "DailyAverageIndex"
         hash_key           = "DailyAverage"
-        write_capacity     = 10
-        read_capacity      = 10
+        write_capacity     = 5
+        read_capacity      = 5
         projection_type    = "KEYS_ONLY"
       },
       {
         name               = "HighWaterIndex"
         hash_key           = "HighWater"
-        write_capacity     = 10
-        read_capacity      = 10
+        write_capacity     = 5
+        read_capacity      = 5
         projection_type    = "KEYS_ONLY"
       }
   ]
@@ -94,8 +94,8 @@ module "dynamodb_table" {
 | `autoscale_min_write_capacity`  | `5`          | DynamoDB autoscaling min write capacity                                        | No       |
 | `autoscale_max_write_capacity`  | `20`         | DynamoDB autoscaling max write capacity                                        | No       |
 | `enable_autoscaler`             | `true`       | Flag to enable/disable DynamoDB autoscaling                                    | No       |
-| `dynamodb_attributes`           | `[]`         | List of maps, that describe extra DynamoDB attributes                          | No       |
-| `global_secondary_index_map`    | `[]`         | List of maps, that describes additional secondary index properties             | No       |
+| `dynamodb_attributes`           | `[]`         | List of maps that describe extra DynamoDB attributes                           | No       |
+| `global_secondary_index_map`    | `[]`         | List of maps that describes additional secondary index properties              | No       |
 
 
 ## A note about DynamoDB attributes

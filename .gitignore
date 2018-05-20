@@ -6,4 +6,4 @@
 .terraform/
 
 .idea
-terraform-aws-dynamodb.iml
+*.iml
