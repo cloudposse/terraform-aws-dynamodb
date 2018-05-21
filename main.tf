@@ -21,6 +21,11 @@ locals {
   ]
 }
 
+resource "null_resource" "global_secondary_indexes" {
+  count    = "${length(var.global_secondary_index_map)}"
+  triggers = "${var.global_secondary_index_map[count.index]}"
+}
+
 resource "aws_dynamodb_table" "default" {
   name           = "${module.dynamodb_label.id}"
   read_capacity  = "${var.autoscale_min_read_capacity}"
@@ -48,7 +53,7 @@ resource "aws_dynamodb_table" "default" {
 }
 
 module "dynamodb_autoscaler" {
-  source                       = "git::https://github.com/cloudposse/terraform-aws-dynamodb-autoscaler.git?ref=tags/0.1.1"
+  source                       = "git::https://github.com/cloudposse/terraform-aws-dynamodb-autoscaler.git?ref=tags/0.2.1"
   enabled                      = "${var.enable_autoscaler}"
   namespace                    = "${var.namespace}"
   stage                        = "${var.stage}"
@@ -57,6 +62,7 @@ module "dynamodb_autoscaler" {
   attributes                   = "${var.attributes}"
   dynamodb_table_name          = "${aws_dynamodb_table.default.id}"
   dynamodb_table_arn           = "${aws_dynamodb_table.default.arn}"
+  dynamodb_indexes             = ["${null_resource.global_secondary_indexes.*.triggers.name}"]
   autoscale_write_target       = "${var.autoscale_write_target}"
   autoscale_read_target        = "${var.autoscale_read_target}"
   autoscale_min_read_capacity  = "${var.autoscale_min_read_capacity}"
