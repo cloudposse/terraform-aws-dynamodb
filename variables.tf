@@ -61,7 +61,7 @@ variable "autoscale_max_write_capacity" {
   description = "DynamoDB autoscaling max write capacity"
 }
 
-variable "stream_enabled" {
+variable "enable_streams" {
   type        = "string"
   default     = "false"
   description = "Enable DynamoDB streams"
