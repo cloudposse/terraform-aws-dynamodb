@@ -32,6 +32,7 @@ resource "aws_dynamodb_table" "default" {
   write_capacity = "${var.autoscale_min_write_capacity}"
   hash_key       = "${var.hash_key}"
   range_key      = "${var.range_key}"
+  stream_enabled = "${var.stream_enabled}"
 
   server_side_encryption {
     enabled = "${var.enable_encryption}"

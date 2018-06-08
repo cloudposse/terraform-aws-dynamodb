@@ -83,7 +83,9 @@ module "dynamodb_table" {
 | `hash_key`                      | ``           | DynamoDB table Hash Key                                                        | Yes      |
 | `range_key`                     | ``           | DynamoDB table Range Key                                                       | Yes      |
 | `ttl_attribute`                 | ``           | DynamoDB table TTL attribute                                                   | No       |
+| `stream_enabled`                | `true`       | Enable DynamoDB streams                                                        | No       |
 | `enable_encryption`             | `true`       | Enable DynamoDB server-side encryption                                         | No       |
+| `enable_point_in_time_recovery` | `true`       | Enable DynamoDB point-in-time recovery                                         | No       |
 | `attributes`                    | `[]`         | Additional attributes (_e.g._ `policy` or `role`)                              | No       |
 | `tags`                          | `{}`         | Additional tags  (_e.g._ `map("BusinessUnit","XYZ")`                           | No       |
 | `delimiter`                     | `-`          | Delimiter to be used between `namespace`, `stage`, `name`, and `attributes`    | No       |
