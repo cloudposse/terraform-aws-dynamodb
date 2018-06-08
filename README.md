@@ -87,6 +87,7 @@ module "dynamodb_table" {
 | `range_key`                     | ``           | DynamoDB table Range Key                                                       | Yes      |
 | `ttl_attribute`                 | ``           | DynamoDB table TTL attribute                                                   | No       |
 | `enable_streams`                | `false`      | Enable DynamoDB streams                                                        | No       |
+| `stream_view_type`              | ``           | When an item in the table is modified, what information is written to the stream | If `enable_streams` is true |
 | `enable_encryption`             | `true`       | Enable DynamoDB server-side encryption                                         | No       |
 | `enable_point_in_time_recovery` | `true`       | Enable DynamoDB point-in-time recovery                                         | No       |
 | `attributes`                    | `[]`         | Additional attributes (_e.g._ `policy` or `role`)                              | No       |

@@ -67,6 +67,12 @@ variable "enable_streams" {
   description = "Enable DynamoDB streams"
 }
 
+variable "stream_view_type" {
+  type        = "string"
+  default     = ""
+  description = "When an item in the table is modified, what information is written to the stream"
+}
+
 variable "enable_encryption" {
   type        = "string"
   default     = "true"
