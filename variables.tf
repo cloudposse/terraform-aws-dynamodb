@@ -61,10 +61,28 @@ variable "autoscale_max_write_capacity" {
   description = "DynamoDB autoscaling max write capacity"
 }
 
+variable "enable_streams" {
+  type        = "string"
+  default     = "false"
+  description = "Enable DynamoDB streams"
+}
+
+variable "stream_view_type" {
+  type        = "string"
+  default     = ""
+  description = "When an item in the table is modified, what information is written to the stream"
+}
+
 variable "enable_encryption" {
   type        = "string"
   default     = "true"
   description = "Enable DynamoDB server-side encryption"
+}
+
+variable "enable_point_in_time_recovery" {
+  type        = "string"
+  default     = "true"
+  description = "Enable DynamoDB point in time recovery"
 }
 
 variable "hash_key" {

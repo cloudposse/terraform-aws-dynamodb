@@ -27,14 +27,20 @@ resource "null_resource" "global_secondary_indexes" {
 }
 
 resource "aws_dynamodb_table" "default" {
-  name           = "${module.dynamodb_label.id}"
-  read_capacity  = "${var.autoscale_min_read_capacity}"
-  write_capacity = "${var.autoscale_min_write_capacity}"
-  hash_key       = "${var.hash_key}"
-  range_key      = "${var.range_key}"
+  name             = "${module.dynamodb_label.id}"
+  read_capacity    = "${var.autoscale_min_read_capacity}"
+  write_capacity   = "${var.autoscale_min_write_capacity}"
+  hash_key         = "${var.hash_key}"
+  range_key        = "${var.range_key}"
+  stream_enabled   = "${var.enable_streams}"
+  stream_view_type = "${var.stream_view_type}"
 
   server_side_encryption {
     enabled = "${var.enable_encryption}"
+  }
+
+  point_in_time_recovery {
+    enabled = "${var.enable_point_in_time_recovery}"
   }
 
   lifecycle {

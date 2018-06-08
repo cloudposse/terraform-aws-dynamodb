@@ -4,6 +4,9 @@ Terraform module to provision a DynamoDB table with autoscaling.
 
 Autoscaler scales up/down the provisioned OPS for the DynamoDB table based on the load.
 
+## Requirements
+
+This module requires [AWS Provider](https://github.com/terraform-providers/terraform-provider-aws) `>= 1.17.0`
 
 ## Usage
 
@@ -83,7 +86,10 @@ module "dynamodb_table" {
 | `hash_key`                      | ``           | DynamoDB table Hash Key                                                        | Yes      |
 | `range_key`                     | ``           | DynamoDB table Range Key                                                       | Yes      |
 | `ttl_attribute`                 | ``           | DynamoDB table TTL attribute                                                   | No       |
+| `enable_streams`                | `false`      | Enable DynamoDB streams                                                        | No       |
+| `stream_view_type`              | ``           | When an item in the table is modified, what information is written to the stream | If `enable_streams` is true |
 | `enable_encryption`             | `true`       | Enable DynamoDB server-side encryption                                         | No       |
+| `enable_point_in_time_recovery` | `true`       | Enable DynamoDB point-in-time recovery                                         | No       |
 | `attributes`                    | `[]`         | Additional attributes (_e.g._ `policy` or `role`)                              | No       |
 | `tags`                          | `{}`         | Additional tags  (_e.g._ `map("BusinessUnit","XYZ")`                           | No       |
 | `delimiter`                     | `-`          | Delimiter to be used between `namespace`, `stage`, `name`, and `attributes`    | No       |
