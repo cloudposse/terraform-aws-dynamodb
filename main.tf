@@ -37,6 +37,10 @@ resource "aws_dynamodb_table" "default" {
     enabled = "${var.enable_encryption}"
   }
 
+  point_in_time_recovery {
+    enabled = "${var.enable_point_in_time_recovery}"
+  }
+
   lifecycle {
     ignore_changes = ["read_capacity", "write_capacity"]
   }

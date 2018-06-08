@@ -67,6 +67,12 @@ variable "enable_encryption" {
   description = "Enable DynamoDB server-side encryption"
 }
 
+variable "enable_point_in_time_recovery" {
+  type        = "string"
+  default     = "true"
+  description = "Enable DynamoDB point in time recovery"
+}
+
 variable "hash_key" {
   type        = "string"
   description = "DynamoDB table Hash Key"
