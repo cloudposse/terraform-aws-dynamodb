@@ -1,0 +1,130 @@
+---
+#
+# This is the canonical configuration for the `README.md`
+# Run `make readme` to rebuild the `README.md`
+#
+
+# Name of this project
+name: terraform-aws-dynamodb
+
+# Logo for this project
+#logo: docs/logo.png
+
+# License of this project
+license: "APACHE2"
+
+# Canonical GitHub repo
+github_repo: cloudposse/terraform-aws-dynamodb
+
+# Badges to display
+badges:
+  - name: "Build Status"
+    image: "https://travis-ci.org/cloudposse/terraform-aws-dynamodb.svg?branch=master"
+    url: "https://travis-ci.org/cloudposse/terraform-aws-dynamodb"
+  - name: "Latest Release"
+    image: "https://img.shields.io/github/release/cloudposse/terraform-aws-dynamodb.svg"
+    url: "https://github.com/cloudposse/terraform-aws-dynamodb/releases/latest"
+  - name: "Slack Community"
+    image: "https://slack.cloudposse.com/badge.svg"
+    url: "https://slack.cloudposse.com"
+
+related:
+  - name: "terraform-aws-dynamodb-autoscaler"
+    description: "Terraform module to provision DynamoDB autoscaler"
+    url: "https://github.com/cloudposse/terraform-aws-dynamodb-autoscaler"
+  - name: "terraform-aws-tfstate-backend"
+    description: "Provision an S3 bucket to store terraform.tfstate file and a DynamoDB table to lock the state file to prevent concurrent modifications and state corruption"
+    url: "https://github.com/cloudposse/terraform-aws-tfstate-backend"
+
+# Short description of this project
+description: |-
+  Terraform module to provision a DynamoDB table with autoscaling.
+
+  Autoscaler scales up/down the provisioned OPS for the DynamoDB table based on the load.
+
+  ## Requirements
+
+  This module requires [AWS Provider](https://github.com/terraform-providers/terraform-provider-aws) `>= 1.17.0`
+
+# How to use this project
+usage: |-
+  ```hcl
+  module "dynamodb_table" {
+    source                       = "git::https://github.com/cloudposse/terraform-aws-dynamodb.git?ref=master"
+    namespace                    = "cp"
+    stage                        = "dev"
+    name                         = "cluster"
+    hash_key                     = "HashKey"
+    range_key                    = "RangeKey"
+    autoscale_write_target       = 50
+    autoscale_read_target        = 50
+    autoscale_min_read_capacity  = 5
+    autoscale_max_read_capacity  = 20
+    autoscale_min_write_capacity = 5
+    autoscale_max_write_capacity = 20
+    enable_autoscaler            = "true"
+  }
+  ```
+
+  ## Advanced Usage - with additional attributes and indexes
+
+  ```hcl
+  module "dynamodb_table" {
+    source                       = "git::https://github.com/cloudposse/terraform-aws-dynamodb.git?ref=master"
+    namespace                    = "cp"
+    stage                        = "dev"
+    name                         = "cluster"
+    hash_key                     = "HashKey"
+    range_key                    = "RangeKey"
+    autoscale_write_target       = 50
+    autoscale_read_target        = 50
+    autoscale_min_read_capacity  = 5
+    autoscale_max_read_capacity  = 20
+    autoscale_min_write_capacity = 5
+    autoscale_max_write_capacity = 20
+    enable_autoscaler            = "true"
+
+    dynamodb_attributes          = [
+        {
+          name = "DailyAverage"
+          type = "N"
+        },
+        {
+          name = "HighWater"
+          type = "N"
+        }
+      ]
+
+    global_secondary_index_map   = [
+        {
+          name               = "DailyAverageIndex"
+          hash_key           = "DailyAverage"
+          write_capacity     = 5
+          read_capacity      = 5
+          projection_type    = "KEYS_ONLY"
+        },
+        {
+          name               = "HighWaterIndex"
+          hash_key           = "HighWater"
+          write_capacity     = 5
+          read_capacity      = 5
+          projection_type    = "KEYS_ONLY"
+        }
+    ]
+  }
+  ```
+
+include:
+  - "docs/targets.md"
+  - "docs/terraform.md"
+
+# Contributors to this project
+contributors:
+  - name: "Erik Osterman"
+    github: "osterman"
+  - name: "Andriy Knysh"
+    github: "aknysh"
+  - name: "Jamie Nelson"
+    github: "Jamie-BitFlight"
+  - name: "Daren Desjardins"
+    github: "darend"
