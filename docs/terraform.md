@@ -30,10 +30,10 @@
 
 | Name | Description |
 |------|-------------|
-| global_secondary_index_names |  |
+| global_secondary_index_names | DynamoDB secondary index names |
 | table_arn | DynamoDB table ARN |
 | table_id | DynamoDB table ID |
 | table_name | DynamoDB table name |
-| table_stream_arn |  |
-| table_stream_label |  |
+| table_stream_arn | DynamoDB table stream ARN |
+| table_stream_label | DynamoDB table stream label |
 

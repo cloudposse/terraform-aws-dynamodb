@@ -35,6 +35,21 @@ related:
   - name: "terraform-aws-tfstate-backend"
     description: "Provision an S3 bucket to store terraform.tfstate file and a DynamoDB table to lock the state file to prevent concurrent modifications and state corruption"
     url: "https://github.com/cloudposse/terraform-aws-tfstate-backend"
+  - name: "terraform-aws-elasticache-redis"
+    description: "Terraform module to provision an ElastiCache Redis Cluster"
+    url: "https://github.com/cloudposse/terraform-aws-elasticache-redis"  
+  - name: "terraform-aws-elasticache-memcached"
+    description: "Terraform Module for ElastiCache Memcached Cluster"
+    url: "https://github.com/cloudposse/terraform-aws-elasticache-memcached"  
+  - name: "terraform-aws-elasticache-cloudwatch-sns-alarms"
+    description: "Terraform module that configures CloudWatch SNS alerts for ElastiCache"
+    url: "https://github.com/cloudposse/terraform-aws-elasticache-cloudwatch-sns-alarms"  
+  - name: "terraform-aws-rds-cluster"
+    description: "Terraform module to provision an RDS Aurora cluster for MySQL or Postgres"
+    url: "https://github.com/cloudposse/terraform-aws-rds-cluster"  
+  - name: "terraform-aws-rds"
+    description: "Terraform module to provision AWS RDS instances"
+    url: "https://github.com/cloudposse/terraform-aws-rds"  
 
 # Short description of this project
 description: |-

@@ -139,12 +139,12 @@ Available targets:
 
 | Name | Description |
 |------|-------------|
-| global_secondary_index_names |  |
+| global_secondary_index_names | DynamoDB secondary index names |
 | table_arn | DynamoDB table ARN |
 | table_id | DynamoDB table ID |
 | table_name | DynamoDB table name |
-| table_stream_arn |  |
-| table_stream_label |  |
+| table_stream_arn | DynamoDB table stream ARN |
+| table_stream_label | DynamoDB table stream label |
 
 
 
@@ -155,6 +155,11 @@ Check out these related projects.
 
 - [terraform-aws-dynamodb-autoscaler](https://github.com/cloudposse/terraform-aws-dynamodb-autoscaler) - Terraform module to provision DynamoDB autoscaler
 - [terraform-aws-tfstate-backend](https://github.com/cloudposse/terraform-aws-tfstate-backend) - Provision an S3 bucket to store terraform.tfstate file and a DynamoDB table to lock the state file to prevent concurrent modifications and state corruption
+- [terraform-aws-elasticache-redis](https://github.com/cloudposse/terraform-aws-elasticache-redis) - Terraform module to provision an ElastiCache Redis Cluster
+- [terraform-aws-elasticache-memcached](https://github.com/cloudposse/terraform-aws-elasticache-memcached) - Terraform Module for ElastiCache Memcached Cluster
+- [terraform-aws-elasticache-cloudwatch-sns-alarms](https://github.com/cloudposse/terraform-aws-elasticache-cloudwatch-sns-alarms) - Terraform module that configures CloudWatch SNS alerts for ElastiCache
+- [terraform-aws-rds-cluster](https://github.com/cloudposse/terraform-aws-rds-cluster) - Terraform module to provision an RDS Aurora cluster for MySQL or Postgres
+- [terraform-aws-rds](https://github.com/cloudposse/terraform-aws-rds) - Terraform module to provision AWS RDS instances
 
 
 
