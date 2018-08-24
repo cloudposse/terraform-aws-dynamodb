@@ -35,7 +35,7 @@ It's 100% Open Source and licensed under the [APACHE2](LICENSE).
 ```hcl
 module "dynamodb_table" {
   source                       = "git::https://github.com/cloudposse/terraform-aws-dynamodb.git?ref=master"
-  namespace                    = "cp"
+  namespace                    = "eg"
   stage                        = "dev"
   name                         = "cluster"
   hash_key                     = "HashKey"
@@ -55,7 +55,7 @@ module "dynamodb_table" {
 ```hcl
 module "dynamodb_table" {
   source                       = "git::https://github.com/cloudposse/terraform-aws-dynamodb.git?ref=master"
-  namespace                    = "cp"
+  namespace                    = "eg"
   stage                        = "dev"
   name                         = "cluster"
   hash_key                     = "HashKey"
@@ -107,8 +107,9 @@ module "dynamodb_table" {
 ```
 Available targets:
 
-  help                                This help screen
+  help                                Help screen
   help/all                            Display help for all targets
+  help/short                          This help short screen
   lint                                Lint terraform code
 
 ```
@@ -133,11 +134,11 @@ Available targets:
 | global_secondary_index_map | Additional global secondary indexes in the form of a list of mapped values | list | `<list>` | no |
 | hash_key | DynamoDB table Hash Key | string | - | yes |
 | name | Name  (e.g. `app` or `cluster`) | string | - | yes |
-| namespace | Namespace (e.g. `cp` or `cloudposse`) | string | - | yes |
-| range_key | DynamoDB table Range Key | string | - | yes |
+| namespace | Namespace (e.g. `eg` or `cp`) | string | - | yes |
+| range_key | DynamoDB table Range Key | string | `` | no |
 | stage | Stage (e.g. `prod`, `dev`, `staging`, `infra`) | string | - | yes |
 | stream_view_type | When an item in the table is modified, what information is written to the stream | string | `` | no |
-| tags | Additional tags (e.g. map('BusinessUnit`,`XYZ`) | map | `<map>` | no |
+| tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`) | map | `<map>` | no |
 | ttl_attribute | DynamoDB table TTL attribute | string | `Expires` | no |
 
 ## Outputs

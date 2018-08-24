@@ -1,6 +1,6 @@
 variable "namespace" {
   type        = "string"
-  description = "Namespace (e.g. `cp` or `cloudposse`)"
+  description = "Namespace (e.g. `eg` or `cp`)"
 }
 
 variable "stage" {
@@ -28,7 +28,7 @@ variable "attributes" {
 variable "tags" {
   type        = "map"
   default     = {}
-  description = "Additional tags (e.g. map('BusinessUnit`,`XYZ`)"
+  description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)"
 }
 
 variable "autoscale_write_target" {
@@ -92,6 +92,7 @@ variable "hash_key" {
 
 variable "range_key" {
   type        = "string"
+  default     = ""
   description = "DynamoDB table Range Key"
 }
 
