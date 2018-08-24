@@ -50,7 +50,9 @@ module "dynamodb_table" {
 }
 ```
 
-## Advanced Usage - with additional attributes and indexes
+## Advanced Usage
+
+With additional attributes, global secondary indexes and `non_key_attributes` (see [examples/complete](examples/complete)).
 
 ```hcl
 module "dynamodb_table" {
@@ -68,32 +70,34 @@ module "dynamodb_table" {
   autoscale_max_write_capacity = 20
   enable_autoscaler            = "true"
 
-  dynamodb_attributes          = [
-      {
-        name = "DailyAverage"
-        type = "N"
-      },
-      {
-        name = "HighWater"
-        type = "N"
-      }
-    ]
+  dynamodb_attributes = [
+    {
+      name = "DailyAverage"
+      type = "N"
+    },
+    {
+      name = "HighWater"
+      type = "N"
+    },
+  ]
 
-  global_secondary_index_map   = [
-      {
-        name               = "DailyAverageIndex"
-        hash_key           = "DailyAverage"
-        write_capacity     = 5
-        read_capacity      = 5
-        projection_type    = "KEYS_ONLY"
-      },
-      {
-        name               = "HighWaterIndex"
-        hash_key           = "HighWater"
-        write_capacity     = 5
-        read_capacity      = 5
-        projection_type    = "KEYS_ONLY"
-      }
+  global_secondary_index_map = [
+    {
+      name               = "DailyAverageIndex"
+      hash_key           = "DailyAverage"
+      range_key          = "HighWater"
+      write_capacity     = 5
+      read_capacity      = 5
+      projection_type    = "INCLUDE"
+      non_key_attributes = ["HashKey", "RangeKey"]
+    },
+    {
+      name            = "HighWaterIndex"
+      hash_key        = "HighWater"
+      write_capacity  = 5
+      read_capacity   = 5
+      projection_type = "KEYS_ONLY"
+    },
   ]
 }
 ```

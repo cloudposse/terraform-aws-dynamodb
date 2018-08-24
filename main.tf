@@ -28,9 +28,13 @@ locals {
   attributes_final = "${slice(local.attributes, local.from_index, length(local.attributes))}"
 }
 
-resource "null_resource" "global_secondary_indexes" {
-  count    = "${length(var.global_secondary_index_map)}"
-  triggers = "${var.global_secondary_index_map[count.index]}"
+resource "null_resource" "global_secondary_indexe_names" {
+  count = "${length(var.global_secondary_index_map)}"
+
+  # Convert the multi-item `global_secondary_index_map` into a simple `map` with just one item `name` since `triggers` does not support `lists` in `maps` (which are used in `non_key_attributes`)
+  # See `examples/complete`
+  # https://www.terraform.io/docs/providers/aws/r/dynamodb_table.html#non_key_attributes-1
+  triggers = "${map("name", lookup(var.global_secondary_index_map[count.index], "name"))}"
 }
 
 resource "aws_dynamodb_table" "default" {
@@ -75,7 +79,7 @@ module "dynamodb_autoscaler" {
   attributes                   = "${var.attributes}"
   dynamodb_table_name          = "${aws_dynamodb_table.default.id}"
   dynamodb_table_arn           = "${aws_dynamodb_table.default.arn}"
-  dynamodb_indexes             = ["${null_resource.global_secondary_indexes.*.triggers.name}"]
+  dynamodb_indexes             = ["${null_resource.global_secondary_indexe_names.*.triggers.name}"]
   autoscale_write_target       = "${var.autoscale_write_target}"
   autoscale_read_target        = "${var.autoscale_read_target}"
   autoscale_min_read_capacity  = "${var.autoscale_min_read_capacity}"
