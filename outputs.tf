@@ -18,6 +18,11 @@ output "global_secondary_index_names" {
   description = "DynamoDB secondary index names"
 }
 
+output "local_secondary_index_names" {
+  value       = ["${null_resource.local_secondary_indexe_names.*.triggers.name}"]
+  description = "DynamoDB local index names"
+}
+
 output "table_stream_arn" {
   value       = "${aws_dynamodb_table.default.stream_arn}"
   description = "DynamoDB table stream ARN"
