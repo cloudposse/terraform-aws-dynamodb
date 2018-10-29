@@ -14,7 +14,7 @@ output "table_arn" {
 }
 
 output "global_secondary_index_names" {
-  value       = ["${null_resource.global_secondary_indexe_names.*.triggers.name}"]
+  value       = ["${null_resource.global_secondary_index_names.*.triggers.name}"]
   description = "DynamoDB secondary index names"
 }
 
