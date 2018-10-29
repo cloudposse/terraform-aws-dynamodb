@@ -16,6 +16,7 @@
 | enable_encryption | Enable DynamoDB server-side encryption | string | `true` | no |
 | enable_point_in_time_recovery | Enable DynamoDB point in time recovery | string | `true` | no |
 | enable_streams | Enable DynamoDB streams | string | `false` | no |
+| local_secondary_index_map | local secondary indexes in the form of a list of mapped values | list | `<list>` | no |
 | global_secondary_index_map | Additional global secondary indexes in the form of a list of mapped values | list | `<list>` | no |
 | hash_key | DynamoDB table Hash Key | string | - | yes |
 | name | Name  (e.g. `app` or `cluster`) | string | - | yes |
@@ -30,6 +31,7 @@
 
 | Name | Description |
 |------|-------------|
+| local_secondary_index_names | DynamoDB local index names |
 | global_secondary_index_names | DynamoDB secondary index names |
 | table_arn | DynamoDB table ARN |
 | table_id | DynamoDB table ID |

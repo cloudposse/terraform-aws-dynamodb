@@ -119,3 +119,9 @@ variable "global_secondary_index_map" {
   default     = []
   description = "Additional global secondary indexes in the form of a list of mapped values"
 }
+
+variable "local_secondary_index_map" {
+  type        = "list"
+  default     = []
+  description = "Additional local secondary indexes in the form of a list of mapped values"
+}

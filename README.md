@@ -81,6 +81,21 @@ module "dynamodb_table" {
     },
   ]
 
+  local_secondary_index_map = [
+    {
+      name      = "TimestampSortIndex"
+      range_key = "Timestamp"
+      projection_type    = "INCLUDE"
+      non_key_attributes = ["HashKey", "RangeKey"]
+    },
+    {
+      name      = "HighWaterIndex"
+      range_key = "Timestamp"
+      projection_type    = "INCLUDE"
+      non_key_attributes = ["HashKey", "RangeKey"]
+    }
+  ]
+
   global_secondary_index_map = [
     {
       name               = "DailyAverageIndex"
@@ -135,6 +150,7 @@ Available targets:
 | enable_encryption | Enable DynamoDB server-side encryption | string | `true` | no |
 | enable_point_in_time_recovery | Enable DynamoDB point in time recovery | string | `true` | no |
 | enable_streams | Enable DynamoDB streams | string | `false` | no |
+| local_secondary_index_map | Additional local secondary indexes in the form of a list of mapped values | list | `<list>` | no |
 | global_secondary_index_map | Additional global secondary indexes in the form of a list of mapped values | list | `<list>` | no |
 | hash_key | DynamoDB table Hash Key | string | - | yes |
 | name | Name  (e.g. `app` or `cluster`) | string | - | yes |
