@@ -37,7 +37,7 @@ resource "null_resource" "global_secondary_indexe_names" {
   triggers = "${map("name", lookup(var.global_secondary_index_map[count.index], "name"))}"
 }
 
-resource "null_resource" "local_secondary_indexe_names" {
+resource "null_resource" "local_secondary_index_names" {
   count = "${length(var.local_secondary_index_map)}"
 
   # Convert the multi-item `local_secondary_index_map` into a simple `map` with just one item `name` since `triggers` does not support `lists` in `maps` (which are used in `non_key_attributes`)

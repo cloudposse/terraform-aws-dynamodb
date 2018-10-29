@@ -30,7 +30,7 @@ module "dynamodb_table" {
 
   local_secondary_index_map = [
     {
-      name               = "TimstampSortIndex"
+      name               = "TimestampSortIndex"
       range_key          = "Timestamp"
       projection_type    = "INCLUDE"
       non_key_attributes = ["HashKey", "RangeKey"]

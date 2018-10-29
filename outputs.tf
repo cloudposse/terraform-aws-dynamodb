@@ -19,7 +19,7 @@ output "global_secondary_index_names" {
 }
 
 output "local_secondary_index_names" {
-  value       = ["${null_resource.local_secondary_indexe_names.*.triggers.name}"]
+  value       = ["${null_resource.local_secondary_index_names.*.triggers.name}"]
   description = "DynamoDB local index names"
 }
 
