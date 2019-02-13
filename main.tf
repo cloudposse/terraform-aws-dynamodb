@@ -53,7 +53,7 @@ resource "aws_dynamodb_table" "default" {
   hash_key         = "${var.hash_key}"
   range_key        = "${var.range_key}"
   stream_enabled   = "${var.enable_streams}"
-  stream_view_type = "${var.stream_view_type}"
+  stream_view_type = "${var.enable_streams ? var.stream_view_type : ""}"
 
   server_side_encryption {
     enabled = "${var.enable_encryption}"
