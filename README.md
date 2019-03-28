@@ -165,6 +165,7 @@ Available targets:
 | enable_encryption | Enable DynamoDB server-side encryption | string | `true` | no |
 | enable_point_in_time_recovery | Enable DynamoDB point in time recovery | string | `true` | no |
 | enable_streams | Enable DynamoDB streams | string | `false` | no |
+| enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
 | global_secondary_index_map | Additional global secondary indexes in the form of a list of mapped values | list | `<list>` | no |
 | hash_key | DynamoDB table Hash Key | string | - | yes |
 | hash_key_type | Hash Key type, which must be a scalar type: `S`, `N`, or `B` for (S)tring, (N)umber or (B)inary data | string | `S` | no |
@@ -276,7 +277,7 @@ In general, PRs are welcome. We follow the typical "fork-and-pull" Git workflow.
 
 ## Copyright
 
-Copyright © 2017-2018 [Cloud Posse, LLC](https://cpco.io/copyright)
+Copyright © 2017-2019 [Cloud Posse, LLC](https://cpco.io/copyright)
 
 
 
@@ -331,8 +332,8 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 
 ### Contributors
 
-|  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Jamie Nelson][Jamie-BitFlight_avatar]][Jamie-BitFlight_homepage]<br/>[Jamie Nelson][Jamie-BitFlight_homepage] | [![Daren Desjardins][darend_avatar]][darend_homepage]<br/>[Daren Desjardins][darend_homepage] |
-|---|---|---|---|
+|  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Jamie Nelson][Jamie-BitFlight_avatar]][Jamie-BitFlight_homepage]<br/>[Jamie Nelson][Jamie-BitFlight_homepage] | [![Daren Desjardins][darend_avatar]][darend_homepage]<br/>[Daren Desjardins][darend_homepage] | [![Maarten van der Hoef][maartenvanderhoef_avatar]][maartenvanderhoef_homepage]<br/>[Maarten van der Hoef][maartenvanderhoef_homepage] |
+|---|---|---|---|---|
 
   [osterman_homepage]: https://github.com/osterman
   [osterman_avatar]: https://github.com/osterman.png?size=150
@@ -342,6 +343,8 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
   [Jamie-BitFlight_avatar]: https://github.com/Jamie-BitFlight.png?size=150
   [darend_homepage]: https://github.com/darend
   [darend_avatar]: https://github.com/darend.png?size=150
+  [maartenvanderhoef_homepage]: https://github.com/maartenvanderhoef
+  [maartenvanderhoef_avatar]: https://github.com/maartenvanderhoef.png?size=150
 
 
 

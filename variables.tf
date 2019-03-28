@@ -8,6 +8,11 @@ variable "stage" {
   description = "Stage (e.g. `prod`, `dev`, `staging`, `infra`)"
 }
 
+variable "enabled" {
+  description = "Set to false to prevent the module from creating any resources"
+  default     = "true"
+}
+
 variable "name" {
   type        = "string"
   description = "Name  (e.g. `app` or `cluster`)"

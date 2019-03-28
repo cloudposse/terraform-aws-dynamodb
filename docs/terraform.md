@@ -15,6 +15,7 @@
 | enable_encryption | Enable DynamoDB server-side encryption | string | `true` | no |
 | enable_point_in_time_recovery | Enable DynamoDB point in time recovery | string | `true` | no |
 | enable_streams | Enable DynamoDB streams | string | `false` | no |
+| enabled | Set to false to prevent the module from creating any resources | string | `true` | no |
 | global_secondary_index_map | Additional global secondary indexes in the form of a list of mapped values | list | `<list>` | no |
 | hash_key | DynamoDB table Hash Key | string | - | yes |
 | hash_key_type | Hash Key type, which must be a scalar type: `S`, `N`, or `B` for (S)tring, (N)umber or (B)inary data | string | `S` | no |
