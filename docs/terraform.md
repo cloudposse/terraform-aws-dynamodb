@@ -9,6 +9,7 @@
 | autoscale_min_write_capacity | DynamoDB autoscaling min write capacity | string | `5` | no |
 | autoscale_read_target | The target value (in %) for DynamoDB read autoscaling | string | `50` | no |
 | autoscale_write_target | The target value (in %) for DynamoDB write autoscaling | string | `50` | no |
+| billing_mode | DynamoDB Billing mode. Can be PROVISIONED or PAY_PER_REQUEST | string | `PROVISIONED` | no |
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name`, and `attributes` | string | `-` | no |
 | dynamodb_attributes | Additional DynamoDB attributes in the form of a list of mapped values | list | `<list>` | no |
 | enable_autoscaler | Flag to enable/disable DynamoDB autoscaling | string | `true` | no |
