@@ -66,6 +66,12 @@ variable "autoscale_max_write_capacity" {
   description = "DynamoDB autoscaling max write capacity"
 }
 
+variable "billing_mode" {
+  type        = "string"
+  default     = "PROVISIONED"
+  description = "DynamoDB Billing mode. Can be PROVISIONED or PAY_PER_REQUEST"
+}
+
 variable "enable_streams" {
   type        = "string"
   default     = "false"

@@ -49,6 +49,7 @@ resource "null_resource" "local_secondary_index_names" {
 resource "aws_dynamodb_table" "default" {
   count            = "${var.enabled == "true" ? 1 : 0 }"
   name             = "${module.dynamodb_label.id}"
+  billing_mode     = "${var.billing_mode}"
   read_capacity    = "${var.autoscale_min_read_capacity}"
   write_capacity   = "${var.autoscale_min_write_capacity}"
   hash_key         = "${var.hash_key}"
@@ -82,7 +83,7 @@ resource "aws_dynamodb_table" "default" {
 
 module "dynamodb_autoscaler" {
   source                       = "git::https://github.com/cloudposse/terraform-aws-dynamodb-autoscaler.git?ref=tags/0.2.5"
-  enabled                      = "${var.enabled == "true" && var.enable_autoscaler == "true"}"
+  enabled                      = "${var.enabled == "true" && var.enable_autoscaler == "true" && var.billing_mode == "PROVISIONED"}"
   namespace                    = "${var.namespace}"
   stage                        = "${var.stage}"
   name                         = "${var.name}"
