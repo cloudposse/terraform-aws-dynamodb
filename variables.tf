@@ -138,13 +138,13 @@ variable "dynamodb_attributes" {
 }
 
 variable "global_secondary_index_map" {
-  type        = list(string)
+  type        = list(map(string))
   default     = []
   description = "Additional global secondary indexes in the form of a list of mapped values"
 }
 
 variable "local_secondary_index_map" {
-  type        = list(string)
+  type        = list(map(string))
   default     = []
   description = "Additional local secondary indexes in the form of a list of mapped values"
 }
