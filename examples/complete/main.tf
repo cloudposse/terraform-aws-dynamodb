@@ -1,5 +1,5 @@
 module "dynamodb_table" {
-  source                       = "git::https://github.com/cloudposse/terraform-aws-dynamodb.git?ref=master"
+  source                       = "git::https://github.com/rverma-nikiai/terraform-aws-dynamodb.git?ref=master"
   enabled                      = "true"
   namespace                    = "eg"
   stage                        = "dev"

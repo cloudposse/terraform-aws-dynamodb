@@ -1,10 +1,10 @@
 variable "namespace" {
-  type        = "string"
+  type        = string
   description = "Namespace (e.g. `eg` or `cp`)"
 }
 
 variable "stage" {
-  type        = "string"
+  type        = string
   description = "Stage (e.g. `prod`, `dev`, `staging`, `infra`)"
 }
 
@@ -14,24 +14,24 @@ variable "enabled" {
 }
 
 variable "name" {
-  type        = "string"
+  type        = string
   description = "Name  (e.g. `app` or `cluster`)"
 }
 
 variable "delimiter" {
-  type        = "string"
+  type        = string
   default     = "-"
   description = "Delimiter to be used between `namespace`, `stage`, `name`, and `attributes`"
 }
 
 variable "attributes" {
-  type        = "list"
+  type        = list(string)
   default     = []
   description = "Additional attributes (e.g. `policy` or `role`)"
 }
 
 variable "tags" {
-  type        = "map"
+  type        = map(string)
   default     = {}
   description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)"
 }
@@ -67,84 +67,85 @@ variable "autoscale_max_write_capacity" {
 }
 
 variable "billing_mode" {
-  type        = "string"
+  type        = string
   default     = "PROVISIONED"
   description = "DynamoDB Billing mode. Can be PROVISIONED or PAY_PER_REQUEST"
 }
 
 variable "enable_streams" {
-  type        = "string"
+  type        = string
   default     = "false"
   description = "Enable DynamoDB streams"
 }
 
 variable "stream_view_type" {
-  type        = "string"
+  type        = string
   default     = ""
   description = "When an item in the table is modified, what information is written to the stream"
 }
 
 variable "enable_encryption" {
-  type        = "string"
+  type        = string
   default     = "true"
   description = "Enable DynamoDB server-side encryption"
 }
 
 variable "enable_point_in_time_recovery" {
-  type        = "string"
+  type        = string
   default     = "true"
   description = "Enable DynamoDB point in time recovery"
 }
 
 variable "hash_key" {
-  type        = "string"
+  type        = string
   description = "DynamoDB table Hash Key"
 }
 
 variable "hash_key_type" {
-  type        = "string"
+  type        = string
   default     = "S"
   description = "Hash Key type, which must be a scalar type: `S`, `N`, or `B` for (S)tring, (N)umber or (B)inary data"
 }
 
 variable "range_key" {
-  type        = "string"
+  type        = string
   default     = ""
   description = "DynamoDB table Range Key"
 }
 
 variable "range_key_type" {
-  type        = "string"
+  type        = string
   default     = "S"
   description = "Range Key type, which must be a scalar type: `S`, `N`, or `B` for (S)tring, (N)umber or (B)inary data"
 }
 
 variable "ttl_attribute" {
-  type        = "string"
+  type        = string
   default     = "Expires"
   description = "DynamoDB table TTL attribute"
 }
 
 variable "enable_autoscaler" {
-  type        = "string"
+  type        = string
   default     = "true"
   description = "Flag to enable/disable DynamoDB autoscaling"
 }
 
 variable "dynamodb_attributes" {
-  type        = "list"
+  type        = list(string)
   default     = []
   description = "Additional DynamoDB attributes in the form of a list of mapped values"
 }
 
 variable "global_secondary_index_map" {
-  type        = "list"
+  type        = list(string)
   default     = []
   description = "Additional global secondary indexes in the form of a list of mapped values"
 }
 
 variable "local_secondary_index_map" {
-  type        = "list"
+  type        = list(string)
   default     = []
   description = "Additional local secondary indexes in the form of a list of mapped values"
 }
+
