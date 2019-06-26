@@ -9,7 +9,7 @@ module "dynamodb_label" {
 }
 
 locals {
-  default_attributes = [
+  attributes = [
     {
       name = var.range_key
       type = var.range_key_type
@@ -17,8 +17,9 @@ locals {
     {
       name = var.hash_key
       type = var.hash_key_type
-  }]
-  attributes = concat(var.dynamodb_attributes, local.default_attributes)
+    },
+    var.dynamodb_attributes,
+  ]
 
   # Use the `slice` pattern (instead of `conditional`) to remove the first map from the list if no `range_key` is provided
   # Terraform does not support conditionals with `lists` and `maps`: aws_dynamodb_table.default: conditional operator cannot be used with list values
@@ -83,7 +84,7 @@ resource "aws_dynamodb_table" "default" {
     }
   }
   dynamic "global_secondary_index" {
-    for_each = [var.global_secondary_index_map]
+    for_each = var.global_secondary_index_map
     content {
       hash_key           = lookup(global_secondary_index.value, "hash_key", null)
       name               = lookup(global_secondary_index.value, "name", null)
@@ -95,7 +96,7 @@ resource "aws_dynamodb_table" "default" {
     }
   }
   dynamic "local_secondary_index" {
-    for_each = [var.local_secondary_index_map]
+    for_each = var.local_secondary_index_map
     content {
       name               = local_secondary_index.value.name
       non_key_attributes = lookup(local_secondary_index.value, "non_key_attributes", null)
