@@ -1,5 +1,5 @@
 module "dynamodb_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.13.0"
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.14.1"
   namespace  = var.namespace
   stage      = var.stage
   name       = var.name
@@ -77,13 +77,8 @@ resource "aws_dynamodb_table" "default" {
   }
 
   dynamic "attribute" {
-    for_each = [local.attributes_final]
+    for_each = local.attributes_final
     content {
-      # TF-UPGRADE-TODO: The automatic upgrade tool can't predict
-      # which keys might be set in maps assigned here, so it has
-      # produced a comprehensive set here. Consider simplifying
-      # this after confirming which keys can be set in practice.
-
       name = attribute.value.name
       type = attribute.value.type
     }
@@ -96,10 +91,10 @@ resource "aws_dynamodb_table" "default" {
       # produced a comprehensive set here. Consider simplifying
       # this after confirming which keys can be set in practice.
 
-      hash_key           = global_secondary_index.value.hash_key
-      name               = global_secondary_index.value.name
+      hash_key           = lookup(global_secondary_index.value, "hash_key", null)
+      name               = lookup(global_secondary_index.value, "name", null)
       non_key_attributes = lookup(global_secondary_index.value, "non_key_attributes", null)
-      projection_type    = global_secondary_index.value.projection_type
+      projection_type    = lookup(global_secondary_index.value, "projection_type", null)
       range_key          = lookup(global_secondary_index.value, "range_key", null)
       read_capacity      = lookup(global_secondary_index.value, "read_capacity", null)
       write_capacity     = lookup(global_secondary_index.value, "write_capacity", null)
@@ -108,11 +103,6 @@ resource "aws_dynamodb_table" "default" {
   dynamic "local_secondary_index" {
     for_each = [var.local_secondary_index_map]
     content {
-      # TF-UPGRADE-TODO: The automatic upgrade tool can't predict
-      # which keys might be set in maps assigned here, so it has
-      # produced a comprehensive set here. Consider simplifying
-      # this after confirming which keys can be set in practice.
-
       name               = local_secondary_index.value.name
       non_key_attributes = lookup(local_secondary_index.value, "non_key_attributes", null)
       projection_type    = local_secondary_index.value.projection_type
