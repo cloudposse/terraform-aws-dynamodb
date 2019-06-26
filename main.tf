@@ -9,17 +9,17 @@ module "dynamodb_label" {
 }
 
 locals {
-  attributes = [
-    {
+  attributes = concat(
+    var.dynamodb_attributes,
+    [{
       name = var.range_key
       type = var.range_key_type
-    },
-    {
-      name = var.hash_key
-      type = var.hash_key_type
-    },
-    var.dynamodb_attributes,
-  ]
+      },
+      {
+        name = var.hash_key
+        type = var.hash_key_type
+      },
+  ])
 
   # Use the `slice` pattern (instead of `conditional`) to remove the first map from the list if no `range_key` is provided
   # Terraform does not support conditionals with `lists` and `maps`: aws_dynamodb_table.default: conditional operator cannot be used with list values
@@ -29,7 +29,7 @@ locals {
 }
 
 resource "null_resource" "global_secondary_index_names" {
-  count = var.enabled == "true" ? 1 : 0 * length(var.global_secondary_index_map)
+  count = (var.enabled == "true" ? 1 : 0) * length(var.global_secondary_index_map)
 
   # Convert the multi-item `global_secondary_index_map` into a simple `map` with just one item `name` since `triggers` does not support `lists` in `maps` (which are used in `non_key_attributes`)
   # See `examples/complete`
@@ -40,7 +40,7 @@ resource "null_resource" "global_secondary_index_names" {
 }
 
 resource "null_resource" "local_secondary_index_names" {
-  count = var.enabled == "true" ? 1 : 0 * length(var.local_secondary_index_map)
+  count = (var.enabled == "true" ? 1 : 0) * length(var.local_secondary_index_map)
 
   # Convert the multi-item `local_secondary_index_map` into a simple `map` with just one item `name` since `triggers` does not support `lists` in `maps` (which are used in `non_key_attributes`)
   # See `examples/complete`
@@ -79,8 +79,8 @@ resource "aws_dynamodb_table" "default" {
   dynamic "attribute" {
     for_each = local.attributes_final
     content {
-      name = attribute.value.name
-      type = attribute.value.type
+      name = lookup(attribute.value, "name", null)
+      type = lookup(attribute.value, "type", null)
     }
   }
   dynamic "global_secondary_index" {
@@ -123,7 +123,7 @@ module "dynamodb_autoscaler" {
   attributes                   = var.attributes
   dynamodb_table_name          = concat(aws_dynamodb_table.default.*.id, [""])[0]
   dynamodb_table_arn           = concat(aws_dynamodb_table.default.*.arn, [""])[0]
-  dynamodb_indexes             = [null_resource.global_secondary_index_names.*.triggers.name]
+  dynamodb_indexes             = null_resource.global_secondary_index_names.*.triggers.name
   autoscale_write_target       = var.autoscale_write_target
   autoscale_read_target        = var.autoscale_read_target
   autoscale_min_read_capacity  = var.autoscale_min_read_capacity
