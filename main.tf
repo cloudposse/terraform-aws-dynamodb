@@ -62,7 +62,7 @@ resource "aws_dynamodb_table" "default" {
   }
 
   dynamic "attribute" {
-    for_each = length(var.range_key) > 0 ? 1 : 0
+    for_each = length(var.range_key) > 0 ? [1] : []
     content {
       name = var.range_key
       type = var.range_key_type
