@@ -8,15 +8,6 @@ module "dynamodb_label" {
   tags       = var.tags
 }
 
-locals {
-  range_attributes = [{
-    name = var.range_key
-    type = var.range_key_type
-  }]
-
-  attributes = length(var.range_key) > 0 ? attributes : []
-}
-
 resource "null_resource" "global_secondary_index_names" {
   count = (var.enabled == "true" ? 1 : 0) * length(var.global_secondary_index_map)
 
@@ -71,6 +62,14 @@ resource "aws_dynamodb_table" "default" {
   }
 
   dynamic "attribute" {
+    for_each = length(var.range_key) > 0 ? 1 : 0
+    content {
+      name = var.range_key
+      type = var.range_key_type
+    }
+  }
+
+  dynamic "attribute" {
     for_each = var.dynamodb_attributes
     content {
       name = attribute.value.name
@@ -78,34 +77,31 @@ resource "aws_dynamodb_table" "default" {
     }
   }
 
-  dynamic "attribute" {
-    for_each = local.attributes
+  dynamic "global_secondary_index" {
+    for_each = var.global_secondary_index_map
+
     content {
-      name = lookup(attribute.value, "name", null)
-      type = lookup(attribute.value, "type", null)
+      name               = global_secondary_index.value.name
+      hash_key           = global_secondary_index.value.hash_key
+      projection_type    = global_secondary_index.value.projection_type
+      range_key          = lookup(global_secondary_index.value, "range_key", null)
+      non_key_attributes = lookup(global_secondary_index.value, "non_key_attributes", null)
+      read_capacity      = lookup(global_secondary_index.value, "read_capacity", null)
+      write_capacity     = lookup(global_secondary_index.value, "write_capacity", null)
     }
   }
 
-  dynamic "global_secondary_index" {
-    for_each = var.global_secondary_index_map
-    content {
-      hash_key           = global_secondary_index.value.hash_key
-      name               = global_secondary_index.value.name
-      non_key_attributes = global_secondary_index.value.non_key_attributes
-      projection_type    = global_secondary_index.value.projection_type
-      range_key          = global_secondary_index.value.range_key
-      read_capacity      = global_secondary_index.value.read_capacity
-      write_capacity     = global_secondary_index.value.write_capacity
-    }
-  }
   dynamic "local_secondary_index" {
     for_each = var.local_secondary_index_map
+
     content {
       name               = local_secondary_index.value.name
-      non_key_attributes = local_secondary_index.value.non_key_attributes
       projection_type    = local_secondary_index.value.projection_type
+      range_key          = local_secondary_index.value.range_key
+      non_key_attributes = lookup(local_secondary_index.value, "non_key_attributes", null)
     }
   }
+
 
   ttl {
     attribute_name = var.ttl_attribute

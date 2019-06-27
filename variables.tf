@@ -141,25 +141,27 @@ variable "dynamodb_attributes" {
 }
 
 variable "global_secondary_index_map" {
-  type = list(object({
-    hash_key           = string
-    range_key          = string
-    name               = string
-    projection_type    = string
-    read_capacity      = number
-    write_capacity     = number
-    non_key_attributes = list(string)
-  }))
+  //  type = list(object({
+  //    hash_key           = string
+  //    range_key          = string
+  //    name               = string
+  //    projection_type    = string
+  //    read_capacity      = number
+  //    write_capacity     = number
+  //    non_key_attributes = list(string)
+  //  }))
+  type        = any
   default     = []
   description = "Additional global secondary indexes in the form of a list of mapped values"
 }
 
 variable "local_secondary_index_map" {
-  type = list(object({
-    name               = string
-    projection_type    = string
-    non_key_attributes = list(string)
-  }))
+  //  type = list(object({
+  //    name               = string
+  //    projection_type    = string
+  //    non_key_attributes = list(string)
+  //  }))
+  type        = any
   default     = []
   description = "Additional local secondary indexes in the form of a list of mapped values"
 }
