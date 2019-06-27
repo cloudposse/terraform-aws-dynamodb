@@ -112,7 +112,6 @@ resource "aws_dynamodb_table" "default" {
 }
 
 module "dynamodb_autoscaler" {
-  count                        = var.billing_mode == "PAY_PER_REQUEST" ? 0 : 1
   source                       = "git::https://github.com/rverma-nikiai/terraform-aws-dynamodb-autoscaler.git?ref=master"
   enabled                      = var.enabled == "true" && var.enable_autoscaler == "true" && var.billing_mode == "PROVISIONED"
   namespace                    = var.namespace
