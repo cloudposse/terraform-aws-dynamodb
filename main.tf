@@ -9,23 +9,12 @@ module "dynamodb_label" {
 }
 
 locals {
-  attributes = concat(
-    var.dynamodb_attributes,
-    [{
-      name = var.range_key
-      type = var.range_key_type
-      },
-      {
-        name = var.hash_key
-        type = var.hash_key_type
-      },
-  ])
+  range_attributes = [{
+    name = var.range_key
+    type = var.range_key_type
+  }]
 
-  # Use the `slice` pattern (instead of `conditional`) to remove the first map from the list if no `range_key` is provided
-  # Terraform does not support conditionals with `lists` and `maps`: aws_dynamodb_table.default: conditional operator cannot be used with list values
-  from_index = length(var.range_key) > 0 ? 0 : 1
-
-  attributes_final = slice(local.attributes, local.from_index, length(local.attributes))
+  attributes = length(var.range_key) > 0 ? attributes : []
 }
 
 resource "null_resource" "global_secondary_index_names" {
@@ -76,32 +65,45 @@ resource "aws_dynamodb_table" "default" {
     ]
   }
 
+  attribute {
+    name = var.hash_key
+    type = var.hash_key_type
+  }
+
   dynamic "attribute" {
-    for_each = local.attributes_final
+    for_each = var.dynamodb_attributes
+    content {
+      name = attribute.value.name
+      type = attribute.value.type
+    }
+  }
+
+  dynamic "attribute" {
+    for_each = local.attributes
     content {
       name = lookup(attribute.value, "name", null)
       type = lookup(attribute.value, "type", null)
     }
   }
+
   dynamic "global_secondary_index" {
     for_each = var.global_secondary_index_map
     content {
-      hash_key           = lookup(global_secondary_index.value, "hash_key", null)
-      name               = lookup(global_secondary_index.value, "name", null)
-      non_key_attributes = lookup(global_secondary_index.value, "non_key_attributes", null)
-      projection_type    = lookup(global_secondary_index.value, "projection_type", null)
-      range_key          = lookup(global_secondary_index.value, "range_key", null)
-      read_capacity      = lookup(global_secondary_index.value, "read_capacity", null)
-      write_capacity     = lookup(global_secondary_index.value, "write_capacity", null)
+      hash_key           = global_secondary_index.value.hash_key
+      name               = global_secondary_index.value.name
+      non_key_attributes = global_secondary_index.value.non_key_attributes
+      projection_type    = global_secondary_index.value.projection_type
+      range_key          = global_secondary_index.value.range_key
+      read_capacity      = global_secondary_index.value.read_capacity
+      write_capacity     = global_secondary_index.value.write_capacity
     }
   }
   dynamic "local_secondary_index" {
     for_each = var.local_secondary_index_map
     content {
       name               = local_secondary_index.value.name
-      non_key_attributes = lookup(local_secondary_index.value, "non_key_attributes", null)
+      non_key_attributes = local_secondary_index.value.non_key_attributes
       projection_type    = local_secondary_index.value.projection_type
-      range_key          = local_secondary_index.value.range_key
     }
   }
 
