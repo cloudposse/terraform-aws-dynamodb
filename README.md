@@ -172,10 +172,10 @@ Available targets:
 | enable_point_in_time_recovery | Enable DynamoDB point in time recovery | bool | `true` | no |
 | enable_streams | Enable DynamoDB streams | bool | `false` | no |
 | enabled | Set to false to prevent the module from creating any resources | bool | `true` | no |
-| global_secondary_index_map | Additional global secondary indexes in the form of a list of mapped values | list(string) | `<list>` | no |
+| global_secondary_index_map | Additional global secondary indexes in the form of a list of mapped values | object | `<list>` | no |
 | hash_key | DynamoDB table Hash Key | string | - | yes |
 | hash_key_type | Hash Key type, which must be a scalar type: `S`, `N`, or `B` for (S)tring, (N)umber or (B)inary data | string | `S` | no |
-| local_secondary_index_map | Additional local secondary indexes in the form of a list of mapped values | list(string) | `<list>` | no |
+| local_secondary_index_map | Additional local secondary indexes in the form of a list of mapped values | object | `<list>` | no |
 | name | Name  (e.g. `app` or `cluster`) | string | - | yes |
 | namespace | Namespace (e.g. `eg` or `cp`) | string | `` | no |
 | range_key | DynamoDB table Range Key | string | `` | no |
