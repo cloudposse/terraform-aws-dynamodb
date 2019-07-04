@@ -10,27 +10,28 @@ module "dynamodb_label" {
 }
 
 locals {
-  attributes = [
-    {
-      name = var.range_key
-      type = var.range_key_type
-    },
-    {
-      name = var.hash_key
-      type = var.hash_key_type
-    },
+  attributes = concat(
+    [
+      {
+        name = var.range_key
+        type = var.range_key_type
+      },
+      {
+        name = var.hash_key
+        type = var.hash_key_type
+      }
+    ],
     var.dynamodb_attributes
-  ]
+  )
 
   # Use the `slice` pattern (instead of `conditional`) to remove the first map from the list if no `range_key` is provided
-  # Terraform does not support conditionals with `lists` and `maps`: aws_dynamodb_table.default: conditional operator cannot be used with list values
   from_index = length(var.range_key) > 0 ? 0 : 1
 
   attributes_final = slice(local.attributes, local.from_index, length(local.attributes))
 }
 
 resource "null_resource" "global_secondary_index_names" {
-  count = var.enabled ? 1 : 0 * length(var.global_secondary_index_map)
+  count = (var.enabled ? 1 : 0) * length(var.global_secondary_index_map)
 
   # Convert the multi-item `global_secondary_index_map` into a simple `map` with just one item `name` since `triggers` does not support `lists` in `maps` (which are used in `non_key_attributes`)
   # See `examples/complete`
@@ -41,7 +42,7 @@ resource "null_resource" "global_secondary_index_names" {
 }
 
 resource "null_resource" "local_secondary_index_names" {
-  count = var.enabled ? 1 : 0 * length(var.local_secondary_index_map)
+  count = (var.enabled ? 1 : 0) * length(var.local_secondary_index_map)
 
   # Convert the multi-item `local_secondary_index_map` into a simple `map` with just one item `name` since `triggers` does not support `lists` in `maps` (which are used in `non_key_attributes`)
   # See `examples/complete`
