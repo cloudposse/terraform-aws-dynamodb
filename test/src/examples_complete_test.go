@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
+	"github.com/stretchr/testify/assert"
 )
 
 // Test the Terraform module in examples/complete using Terratest.
@@ -23,4 +24,14 @@ func TestExamplesComplete(t *testing.T) {
 
 	// This will run `terraform init` and `terraform apply` and fail the test if there are any errors
 	terraform.InitAndApply(t, terraformOptions)
+
+	// Run `terraform output` to get the value of an output variable
+	tableName := terraform.Output(t, terraformOptions, "table_name")
+	// Verify we're getting back the outputs we expect
+	assert.Equal(t, "eg-test-dynamodb-table", tableName)
+
+	// Run `terraform output` to get the value of an output variable
+	tableArn := terraform.Output(t, terraformOptions, "table_arn")
+	// Verify we're getting back the outputs we expect
+	assert.Equal(t, "arn:aws:dynamodb:us-west-1:126450723953:table/eg-test-dynamodb-table", tableArn)
 }
