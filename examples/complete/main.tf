@@ -52,11 +52,13 @@ module "dynamodb_table" {
       non_key_attributes = ["HashKey", "RangeKey"]
     },
     {
-      name            = "HighWaterIndex"
-      hash_key        = "HighWater"
-      write_capacity  = 5
-      read_capacity   = 5
-      projection_type = "KEYS_ONLY"
+      name               = "HighWaterIndex"
+      hash_key           = "HighWater"
+      range_key          = "DailyAverage"
+      write_capacity     = 5
+      read_capacity      = 5
+      projection_type    = "KEYS_ONLY"
+      non_key_attributes = ["HashKey", "RangeKey"]
     }
   ]
 }

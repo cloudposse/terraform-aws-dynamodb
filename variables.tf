@@ -141,7 +141,10 @@ variable "enable_autoscaler" {
 }
 
 variable "dynamodb_attributes" {
-  type        = list(string)
+  type = list(object({
+    name = string
+    type = string
+  }))
   default     = []
   description = "Additional DynamoDB attributes in the form of a list of mapped values"
 }

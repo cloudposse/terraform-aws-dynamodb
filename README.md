@@ -99,23 +99,27 @@ module "dynamodb_table" {
     {
       name = "HighWater"
       type = "N"
+    },
+    {
+      name = "Timestamp"
+      type = "S"
     }
   ]
 
   local_secondary_index_map = [
-  {
-    name      = "TimestampSortIndex"
-    range_key = "Timestamp"
-    projection_type    = "INCLUDE"
-    non_key_attributes = ["HashKey", "RangeKey"]
-  },
-  {
-    name      = "HighWaterIndex"
-    range_key = "Timestamp"
-    projection_type    = "INCLUDE"
-    non_key_attributes = ["HashKey", "RangeKey"]
-  }
-]
+    {
+      name               = "TimestampSortIndex"
+      range_key          = "Timestamp"
+      projection_type    = "INCLUDE"
+      non_key_attributes = ["HashKey", "RangeKey"]
+    },
+    {
+      name               = "HighWaterIndex"
+      range_key          = "Timestamp"
+      projection_type    = "INCLUDE"
+      non_key_attributes = ["HashKey", "RangeKey"]
+    }
+  ]
 
   global_secondary_index_map = [
     {
@@ -128,11 +132,13 @@ module "dynamodb_table" {
       non_key_attributes = ["HashKey", "RangeKey"]
     },
     {
-      name            = "HighWaterIndex"
-      hash_key        = "HighWater"
-      write_capacity  = 5
-      read_capacity   = 5
-      projection_type = "KEYS_ONLY"
+      name               = "HighWaterIndex"
+      hash_key           = "HighWater"
+      range_key          = "DailyAverage"
+      write_capacity     = 5
+      read_capacity      = 5
+      projection_type    = "KEYS_ONLY"
+      non_key_attributes = ["HashKey", "RangeKey"]
     }
   ]
 }
@@ -166,7 +172,7 @@ Available targets:
 | autoscale_write_target | The target value (in %) for DynamoDB write autoscaling | number | `50` | no |
 | billing_mode | DynamoDB Billing mode. Can be PROVISIONED or PAY_PER_REQUEST | string | `PROVISIONED` | no |
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name`, and `attributes` | string | `-` | no |
-| dynamodb_attributes | Additional DynamoDB attributes in the form of a list of mapped values | list(string) | `<list>` | no |
+| dynamodb_attributes | Additional DynamoDB attributes in the form of a list of mapped values | object | `<list>` | no |
 | enable_autoscaler | Flag to enable/disable DynamoDB autoscaling | string | `true` | no |
 | enable_encryption | Enable DynamoDB server-side encryption | bool | `true` | no |
 | enable_point_in_time_recovery | Enable DynamoDB point in time recovery | bool | `true` | no |

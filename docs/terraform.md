@@ -11,7 +11,7 @@
 | autoscale_write_target | The target value (in %) for DynamoDB write autoscaling | number | `50` | no |
 | billing_mode | DynamoDB Billing mode. Can be PROVISIONED or PAY_PER_REQUEST | string | `PROVISIONED` | no |
 | delimiter | Delimiter to be used between `namespace`, `stage`, `name`, and `attributes` | string | `-` | no |
-| dynamodb_attributes | Additional DynamoDB attributes in the form of a list of mapped values | list(string) | `<list>` | no |
+| dynamodb_attributes | Additional DynamoDB attributes in the form of a list of mapped values | object | `<list>` | no |
 | enable_autoscaler | Flag to enable/disable DynamoDB autoscaling | string | `true` | no |
 | enable_encryption | Enable DynamoDB server-side encryption | bool | `true` | no |
 | enable_point_in_time_recovery | Enable DynamoDB point in time recovery | bool | `true` | no |
