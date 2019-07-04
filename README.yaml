@@ -33,9 +33,9 @@ github_repo: cloudposse/terraform-aws-dynamodb
 
 # Badges to display
 badges:
-  - name: "Build Status"
-    image: "https://travis-ci.org/cloudposse/terraform-aws-dynamodb.svg?branch=master"
-    url: "https://travis-ci.org/cloudposse/terraform-aws-dynamodb"
+  - name: "Codefresh Build Status"
+    image: "https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-dynamodb?type=cf-1"
+    url: "https://g.codefresh.io/public/accounts/cloudposse/pipelines/5d1cdacfa7e22eb4aa7ea776"
   - name: "Latest Release"
     image: "https://img.shields.io/github/release/cloudposse/terraform-aws-dynamodb.svg"
     url: "https://github.com/cloudposse/terraform-aws-dynamodb/releases/latest"
@@ -92,7 +92,7 @@ usage: |-
     autoscale_max_read_capacity  = 20
     autoscale_min_write_capacity = 5
     autoscale_max_write_capacity = 20
-    enable_autoscaler            = "true"
+    enable_autoscaler            = true
   }
   ```
 
@@ -114,7 +114,7 @@ usage: |-
     autoscale_max_read_capacity  = 20
     autoscale_min_write_capacity = 5
     autoscale_max_write_capacity = 20
-    enable_autoscaler            = "true"
+    enable_autoscaler            = true
 
     dynamodb_attributes = [
       {
@@ -124,7 +124,7 @@ usage: |-
       {
         name = "HighWater"
         type = "N"
-      },
+      }
     ]
 
     local_secondary_index_map = [
@@ -158,7 +158,7 @@ usage: |-
         write_capacity  = 5
         read_capacity   = 5
         projection_type = "KEYS_ONLY"
-      },
+      }
     ]
   }
   ```
