@@ -130,15 +130,6 @@ module "dynamodb_table" {
       read_capacity      = 5
       projection_type    = "INCLUDE"
       non_key_attributes = ["HashKey", "RangeKey"]
-    },
-    {
-      name               = "HighWaterIndex"
-      hash_key           = "HighWater"
-      range_key          = "DailyAverage"
-      write_capacity     = 5
-      read_capacity      = 5
-      projection_type    = "KEYS_ONLY"
-      non_key_attributes = ["HashKey", "RangeKey"]
     }
   ]
 }
