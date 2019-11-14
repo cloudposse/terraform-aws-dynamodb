@@ -25,6 +25,7 @@
 | namespace | Namespace (e.g. `eg` or `cp`) | string | `` | no |
 | range_key | DynamoDB table Range Key | string | `` | no |
 | range_key_type | Range Key type, which must be a scalar type: `S`, `N`, or `B` for (S)tring, (N)umber or (B)inary data | string | `S` | no |
+| regex_replace_chars | Regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`. By default only hyphens, letters and digits are allowed, all other chars are removed | string | `/[^a-zA-Z0-9-]/` | no |
 | stage | Stage (e.g. `prod`, `dev`, `staging`, `infra`) | string | `` | no |
 | stream_view_type | When an item in the table is modified, what information is written to the stream | string | `` | no |
 | tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`) | map(string) | `<map>` | no |
