@@ -1,42 +1,49 @@
 variable "namespace" {
   type        = string
-  description = "Namespace (e.g. `eg` or `cp`)"
   default     = ""
+  description = "Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp'"
+}
+
+variable "environment" {
+  type        = string
+  default     = ""
+  description = "Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT'"
 }
 
 variable "stage" {
   type        = string
-  description = "Stage (e.g. `prod`, `dev`, `staging`, `infra`)"
   default     = ""
-}
-
-variable "enabled" {
-  type        = bool
-  description = "Set to false to prevent the module from creating any resources"
-  default     = true
+  description = "Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release'"
 }
 
 variable "name" {
   type        = string
-  description = "Name  (e.g. `app` or `cluster`)"
+  default     = ""
+  description = "Solution name, e.g. 'app' or 'jenkins'"
+}
+
+variable "enabled" {
+  type        = bool
+  default     = true
+  description = "Set to false to prevent the module from creating any resources"
 }
 
 variable "delimiter" {
   type        = string
   default     = "-"
-  description = "Delimiter to be used between `namespace`, `stage`, `name`, and `attributes`"
+  description = "Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`"
 }
 
 variable "attributes" {
   type        = list(string)
   default     = []
-  description = "Additional attributes (e.g. `policy` or `role`)"
+  description = "Additional attributes (e.g. `1`)"
 }
 
 variable "tags" {
   type        = map(string)
   default     = {}
-  description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)"
+  description = "Additional tags (e.g. `map('BusinessUnit','XYZ')`"
 }
 
 variable "autoscale_write_target" {
