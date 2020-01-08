@@ -113,7 +113,7 @@ resource "aws_dynamodb_table" "default" {
 
   ttl {
     attribute_name = var.ttl_attribute
-    enabled        = var.ttl_attribute != "" ? true : false
+    enabled        = var.ttl_attribute != "" && var.ttl_attribute != null ? true : false
   }
 
   tags = module.dynamodb_label.tags
