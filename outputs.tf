@@ -1,15 +1,15 @@
 output "table_name" {
-  value       = concat(aws_dynamodb_table.default.*.name, [""])[0]
+  value       = join("", aws_dynamodb_table.default.*.name)
   description = "DynamoDB table name"
 }
 
 output "table_id" {
-  value       = concat(aws_dynamodb_table.default.*.id, [""])[0]
+  value       = join("", aws_dynamodb_table.default.*.id)
   description = "DynamoDB table ID"
 }
 
 output "table_arn" {
-  value       = concat(aws_dynamodb_table.default.*.arn, [""])[0]
+  value       = join("", aws_dynamodb_table.default.*.arn)
   description = "DynamoDB table ARN"
 }
 
@@ -24,11 +24,11 @@ output "local_secondary_index_names" {
 }
 
 output "table_stream_arn" {
-  value       = concat(aws_dynamodb_table.default.*.stream_arn, [""])[0]
+  value       = join("", aws_dynamodb_table.default.*.stream_arn)
   description = "DynamoDB table stream ARN"
 }
 
 output "table_stream_label" {
-  value       = concat(aws_dynamodb_table.default.*.stream_label, [""])[0]
+  value       = join("", aws_dynamodb_table.default.*.stream_label)
   description = "DynamoDB table stream label"
 }

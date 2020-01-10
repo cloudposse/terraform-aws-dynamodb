@@ -92,6 +92,11 @@ We literally have [*hundreds of terraform modules*][terraform_modules] that are 
 Instead pin to the release tag (e.g. `?ref=tags/x.y.z`) of one of our [latest releases](https://github.com/cloudposse/terraform-aws-dynamodb/releases).
 
 
+
+For a complete example, see [examples/complete](examples/complete).
+
+For automated tests of the complete example using [bats](https://github.com/bats-core/bats-core) and [Terratest](https://github.com/gruntwork-io/terratest) (which tests and deploys the example on AWS), see [test](test).
+
 ```hcl
 module "dynamodb_table" {
   source                       = "git::https://github.com/cloudposse/terraform-aws-dynamodb.git?ref=master"
@@ -173,6 +178,27 @@ module "dynamodb_table" {
   ]
 }
 ```
+
+__NOTE:__ Variables "global_secondary_index_map" and "local_secondary_index_map" have a predefined schema, but in some cases not all fields are required or needed.
+
+For example:
+ * `non_key_attributes` can't be specified for Global Secondary Indexes (GSIs) when `projection_type` is `ALL`
+ * `read_capacity` and `write_capacity` are not required for GSIs
+
+In these cases, set the fields to `null` and Terraform will treat them as if they were not provided at all, but will not complain about missing values:
+
+```hcl
+  global_secondary_index_map = [
+    {
+      write_capacity     = null
+      read_capacity      = null
+      projection_type    = "ALL"
+      non_key_attributes = null
+    }
+  ]
+```
+
+See [Terraform types and values](https://www.terraform.io/docs/configuration/expressions.html#types-and-values) for more details.
 
 
 

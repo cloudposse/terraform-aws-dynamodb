@@ -26,7 +26,7 @@ locals {
     var.dynamodb_attributes
   )
 
-  # Use the `slice` pattern (instead of `conditional`) to remove the first map from the list if no `range_key` is provided
+  # Remove the first map from the list if no `range_key` is provided
   from_index = length(var.range_key) > 0 ? 0 : 1
 
   attributes_final = slice(local.attributes, local.from_index, length(local.attributes))
@@ -113,7 +113,7 @@ resource "aws_dynamodb_table" "default" {
 
   ttl {
     attribute_name = var.ttl_attribute
-    enabled        = var.ttl_attribute != "" ? true : false
+    enabled        = var.ttl_attribute != "" && var.ttl_attribute != null ? true : false
   }
 
   tags = module.dynamodb_label.tags
@@ -129,8 +129,8 @@ module "dynamodb_autoscaler" {
   delimiter                    = var.delimiter
   attributes                   = var.attributes
   tags                         = module.dynamodb_label.tags
-  dynamodb_table_name          = concat(aws_dynamodb_table.default.*.id, [""])[0]
-  dynamodb_table_arn           = concat(aws_dynamodb_table.default.*.arn, [""])[0]
+  dynamodb_table_name          = join("", aws_dynamodb_table.default.*.id)
+  dynamodb_table_arn           = join("", aws_dynamodb_table.default.*.arn)
   dynamodb_indexes             = null_resource.global_secondary_index_names.*.triggers.name
   autoscale_write_target       = var.autoscale_write_target
   autoscale_read_target        = var.autoscale_read_target
