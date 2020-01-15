@@ -12,6 +12,7 @@ tags:
   - aws
   - terraform
   - terraform-modules
+  - database
   - databases
   - autoscaling
   - dynamodb
