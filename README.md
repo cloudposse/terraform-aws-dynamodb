@@ -47,7 +47,7 @@
 
 Terraform module to provision a DynamoDB table with autoscaling.
 
-Autoscaler scales up/down the provisioned OPS for the DynamoDB table based on the load.
+The autoscaler scales up/down the provisioned OPS for the DynamoDB table based on the load.
 
 ## Requirements
 
