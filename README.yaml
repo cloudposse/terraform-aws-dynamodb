@@ -17,6 +17,7 @@ tags:
   - dynamodb
   - dynamodb-table
   - dynamodb-database
+  - nosql
 
 # Categories of this project
 categories:
