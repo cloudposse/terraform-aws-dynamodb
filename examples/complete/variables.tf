@@ -4,8 +4,7 @@ variable "region" {
 }
 
 variable "namespace" {
-  type        = string
-  description = "Namespace (e.g. `eg` or `cp`)"
+  type = string
 }
 
 variable "stage" {

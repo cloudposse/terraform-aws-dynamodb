@@ -4,8 +4,7 @@ output "table_name" {
 }
 
 output "table_id" {
-  value       = module.dynamodb_table.table_id
-  description = "DynamoDB table ID"
+  value = module.dynamodb_table.table_id
 }
 
 output "table_arn" {
