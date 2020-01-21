@@ -1,12 +1,13 @@
 variable "namespace" {
-  type    = string
-  default = ""
+  type        = string
+  default     = ""
+  description = "Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp'"
 }
 
 variable "environment" {
   type        = string
   default     = ""
-  description = ""
+  description = "Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT'"
 }
 
 variable "stage" {

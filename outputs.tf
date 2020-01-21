@@ -1,10 +1,11 @@
 output "table_name" {
-  value = join("", aws_dynamodb_table.default.*.name)
+  value       = join("", aws_dynamodb_table.default.*.name)
+  description = "DynamoDB table name"
 }
 
 output "table_id" {
   value       = join("", aws_dynamodb_table.default.*.id)
-  description = ""
+  description = "DynamoDB table ID"
 }
 
 output "table_arn" {
