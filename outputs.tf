@@ -9,7 +9,8 @@ output "table_id" {
 }
 
 output "table_arn" {
-  value = join("", aws_dynamodb_table.default.*.arn)
+  value       = join("", aws_dynamodb_table.default.*.arn)
+  description = "DynamoDB table ARN"
 }
 
 output "global_secondary_index_names" {
