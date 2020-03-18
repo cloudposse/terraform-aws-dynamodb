@@ -154,8 +154,8 @@ variable "autoscaler_attributes" {
 }
 
 variable "autoscaler_tags" {
-  type        = list(string)
-  default     = []
+  type        = map(string)
+  default     = {}
   description = "Additional resource tags for the autoscaler module"
 }
 
