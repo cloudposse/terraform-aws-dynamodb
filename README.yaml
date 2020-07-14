@@ -1,4 +1,3 @@
----
 #
 # This is the canonical configuration for the `README.md`
 # Run `make readme` to rebuild the `README.md`
@@ -6,7 +5,6 @@
 
 # Name of this project
 name: terraform-aws-dynamodb
-
 # Tags of this project
 tags:
   - aws
@@ -17,32 +15,24 @@ tags:
   - dynamodb
   - dynamodb-table
   - dynamodb-database
-
 # Categories of this project
 categories:
   - terraform-modules/databases
-
 # Logo for this project
 #logo: docs/logo.png
 
 # License of this project
 license: "APACHE2"
-
 # Canonical GitHub repo
 github_repo: cloudposse/terraform-aws-dynamodb
-
 # Badges to display
 badges:
-  - name: "Codefresh Build Status"
-    image: "https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-dynamodb?type=cf-1"
-    url: "https://g.codefresh.io/public/accounts/cloudposse/pipelines/5d1cdacfa7e22eb4aa7ea776"
   - name: "Latest Release"
     image: "https://img.shields.io/github/release/cloudposse/terraform-aws-dynamodb.svg"
     url: "https://github.com/cloudposse/terraform-aws-dynamodb/releases/latest"
   - name: "Slack Community"
     image: "https://slack.cloudposse.com/badge.svg"
     url: "https://slack.cloudposse.com"
-
 related:
   - name: "terraform-aws-dynamodb-autoscaler"
     description: "Terraform module to provision DynamoDB autoscaler"
@@ -65,7 +55,6 @@ related:
   - name: "terraform-aws-rds"
     description: "Terraform module to provision AWS RDS instances"
     url: "https://github.com/cloudposse/terraform-aws-rds"
-
 # Short description of this project
 description: |-
   Terraform module to provision a DynamoDB table with autoscaling.
@@ -75,9 +64,8 @@ description: |-
   ## Requirements
 
   This module requires [AWS Provider](https://github.com/terraform-providers/terraform-provider-aws) `>= 1.17.0`
-
 # How to use this project
-usage: |-
+usage: |2-
 
   For a complete example, see [examples/complete](examples/complete).
 
@@ -185,11 +173,9 @@ usage: |-
   ```
 
   See [Terraform types and values](https://www.terraform.io/docs/configuration/expressions.html#types-and-values) for more details.
-
 include:
   - "docs/targets.md"
   - "docs/terraform.md"
-
 # Contributors to this project
 contributors:
   - name: "Erik Osterman"

@@ -42,7 +42,7 @@
 
 [![Cloud Posse][logo]](https://cpco.io/homepage)
 
-# terraform-aws-dynamodb [![Codefresh Build Status](https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-dynamodb?type=cf-1)](https://g.codefresh.io/public/accounts/cloudposse/pipelines/5d1cdacfa7e22eb4aa7ea776) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-dynamodb.svg)](https://github.com/cloudposse/terraform-aws-dynamodb/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
+# terraform-aws-dynamodb [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-dynamodb.svg)](https://github.com/cloudposse/terraform-aws-dynamodb/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 
 
 Terraform module to provision a DynamoDB table with autoscaling.
@@ -215,51 +215,66 @@ Available targets:
   lint                                Lint terraform code
 
 ```
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | ~> 0.12.0 |
+| aws | ~> 2.0 |
+| null | ~> 2.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| aws | ~> 2.0 |
+| null | ~> 2.0 |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| attributes | Additional attributes (e.g. `1`) | list(string) | `<list>` | no |
-| autoscale_max_read_capacity | DynamoDB autoscaling max read capacity | number | `20` | no |
-| autoscale_max_write_capacity | DynamoDB autoscaling max write capacity | number | `20` | no |
-| autoscale_min_read_capacity | DynamoDB autoscaling min read capacity | number | `5` | no |
-| autoscale_min_write_capacity | DynamoDB autoscaling min write capacity | number | `5` | no |
-| autoscale_read_target | The target value (in %) for DynamoDB read autoscaling | number | `50` | no |
-| autoscale_write_target | The target value (in %) for DynamoDB write autoscaling | number | `50` | no |
-| billing_mode | DynamoDB Billing mode. Can be PROVISIONED or PAY_PER_REQUEST | string | `PROVISIONED` | no |
-| delimiter | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes` | string | `-` | no |
-| dynamodb_attributes | Additional DynamoDB attributes in the form of a list of mapped values | object | `<list>` | no |
-| enable_autoscaler | Flag to enable/disable DynamoDB autoscaling | bool | `false` | no |
-| enable_encryption | Enable DynamoDB server-side encryption | bool | `true` | no |
-| enable_point_in_time_recovery | Enable DynamoDB point in time recovery | bool | `true` | no |
-| enable_streams | Enable DynamoDB streams | bool | `false` | no |
-| enabled | Set to false to prevent the module from creating any resources | bool | `true` | no |
-| environment | Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT' | string | `` | no |
-| global_secondary_index_map | Additional global secondary indexes in the form of a list of mapped values | object | `<list>` | no |
-| hash_key | DynamoDB table Hash Key | string | - | yes |
-| hash_key_type | Hash Key type, which must be a scalar type: `S`, `N`, or `B` for (S)tring, (N)umber or (B)inary data | string | `S` | no |
-| local_secondary_index_map | Additional local secondary indexes in the form of a list of mapped values | object | `<list>` | no |
-| name | Solution name, e.g. 'app' or 'jenkins' | string | `` | no |
-| namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | string | `` | no |
-| range_key | DynamoDB table Range Key | string | `` | no |
-| range_key_type | Range Key type, which must be a scalar type: `S`, `N`, or `B` for (S)tring, (N)umber or (B)inary data | string | `S` | no |
-| regex_replace_chars | Regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`. By default only hyphens, letters and digits are allowed, all other chars are removed | string | `/[^a-zA-Z0-9-]/` | no |
-| stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | string | `` | no |
-| stream_view_type | When an item in the table is modified, what information is written to the stream | string | `` | no |
-| tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | map(string) | `<map>` | no |
-| ttl_attribute | DynamoDB table TTL attribute | string | `Expires` | no |
+|------|-------------|------|---------|:--------:|
+| attributes | Additional attributes (e.g. `1`) | `list(string)` | `[]` | no |
+| autoscale\_max\_read\_capacity | DynamoDB autoscaling max read capacity | `number` | `20` | no |
+| autoscale\_max\_write\_capacity | DynamoDB autoscaling max write capacity | `number` | `20` | no |
+| autoscale\_min\_read\_capacity | DynamoDB autoscaling min read capacity | `number` | `5` | no |
+| autoscale\_min\_write\_capacity | DynamoDB autoscaling min write capacity | `number` | `5` | no |
+| autoscale\_read\_target | The target value (in %) for DynamoDB read autoscaling | `number` | `50` | no |
+| autoscale\_write\_target | The target value (in %) for DynamoDB write autoscaling | `number` | `50` | no |
+| billing\_mode | DynamoDB Billing mode. Can be PROVISIONED or PAY\_PER\_REQUEST | `string` | `"PROVISIONED"` | no |
+| delimiter | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes` | `string` | `"-"` | no |
+| dynamodb\_attributes | Additional DynamoDB attributes in the form of a list of mapped values | <pre>list(object({<br>    name = string<br>    type = string<br>  }))</pre> | `[]` | no |
+| enable\_autoscaler | Flag to enable/disable DynamoDB autoscaling | `bool` | `false` | no |
+| enable\_encryption | Enable DynamoDB server-side encryption | `bool` | `true` | no |
+| enable\_point\_in\_time\_recovery | Enable DynamoDB point in time recovery | `bool` | `true` | no |
+| enable\_streams | Enable DynamoDB streams | `bool` | `false` | no |
+| enabled | Set to false to prevent the module from creating any resources | `bool` | `true` | no |
+| environment | Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT' | `string` | `""` | no |
+| global\_secondary\_index\_map | Additional global secondary indexes in the form of a list of mapped values | <pre>list(object({<br>    hash_key           = string<br>    name               = string<br>    non_key_attributes = list(string)<br>    projection_type    = string<br>    range_key          = string<br>    read_capacity      = number<br>    write_capacity     = number<br>  }))</pre> | `[]` | no |
+| hash\_key | DynamoDB table Hash Key | `string` | n/a | yes |
+| hash\_key\_type | Hash Key type, which must be a scalar type: `S`, `N`, or `B` for (S)tring, (N)umber or (B)inary data | `string` | `"S"` | no |
+| local\_secondary\_index\_map | Additional local secondary indexes in the form of a list of mapped values | <pre>list(object({<br>    name               = string<br>    non_key_attributes = list(string)<br>    projection_type    = string<br>    range_key          = string<br>  }))</pre> | `[]` | no |
+| name | Solution name, e.g. 'app' or 'jenkins' | `string` | `""` | no |
+| namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | `string` | `""` | no |
+| range\_key | DynamoDB table Range Key | `string` | `""` | no |
+| range\_key\_type | Range Key type, which must be a scalar type: `S`, `N`, or `B` for (S)tring, (N)umber or (B)inary data | `string` | `"S"` | no |
+| regex\_replace\_chars | Regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`. By default only hyphens, letters and digits are allowed, all other chars are removed | `string` | `"/[^a-zA-Z0-9-]/"` | no |
+| stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `""` | no |
+| stream\_view\_type | When an item in the table is modified, what information is written to the stream | `string` | `""` | no |
+| tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
+| ttl\_attribute | DynamoDB table TTL attribute | `string` | `"Expires"` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| global_secondary_index_names | DynamoDB secondary index names |
-| local_secondary_index_names | DynamoDB local index names |
-| table_arn | DynamoDB table ARN |
-| table_id | DynamoDB table ID |
-| table_name | DynamoDB table name |
-| table_stream_arn | DynamoDB table stream ARN |
-| table_stream_label | DynamoDB table stream label |
+| global\_secondary\_index\_names | DynamoDB secondary index names |
+| local\_secondary\_index\_names | DynamoDB local index names |
+| table\_arn | DynamoDB table ARN |
+| table\_id | DynamoDB table ID |
+| table\_name | DynamoDB table name |
+| table\_stream\_arn | DynamoDB table stream ARN |
+| table\_stream\_label | DynamoDB table stream label |
 
 
 
@@ -318,6 +333,10 @@ We deliver 10x the value for a fraction of the cost of a full-time engineer. Our
 ## Slack Community
 
 Join our [Open Source Community][slack] on Slack. It's **FREE** for everyone! Our "SweetOps" community is where you get to talk with others who share a similar vision for how to rollout and manage infrastructure. This is the best place to talk shop, ask questions, solicit feedback, and work together as a community to build totally *sweet* infrastructure.
+
+## Discourse Forums
+
+Participate in our [Discourse Forums][discourse]. Here you'll find answers to commonly asked questions. Most questions will be related to the enormous number of projects we support on our GitHub. Come here to collaborate on answers, find solutions, and get ideas about the products and services we value. It only takes a minute to get started! Just sign in with SSO using your GitHub account.
 
 ## Newsletter
 
@@ -436,6 +455,7 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
   [testimonial]: https://cpco.io/leave-testimonial?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-dynamodb&utm_content=testimonial
   [office_hours]: https://cloudposse.com/office-hours?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-dynamodb&utm_content=office_hours
   [newsletter]: https://cpco.io/newsletter?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-dynamodb&utm_content=newsletter
+  [discourse]: https://ask.sweetops.com/?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-dynamodb&utm_content=discourse
   [email]: https://cpco.io/email?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-dynamodb&utm_content=email
   [commercial_support]: https://cpco.io/commercial-support?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-dynamodb&utm_content=commercial_support
   [we_love_open_source]: https://cpco.io/we-love-open-source?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-dynamodb&utm_content=we_love_open_source
