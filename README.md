@@ -21,9 +21,12 @@
 
 
 
+  -->
+[![README Header][readme_header_img]][readme_header_link]
 
+[![Cloud Posse][logo]](https://cpco.io/homepage)
 
--->
+# terraform-aws-dynamodb [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-dynamodb.svg)](https://github.com/cloudposse/terraform-aws-dynamodb/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 
 Terraform module to provision a DynamoDB table with autoscaling.
 
