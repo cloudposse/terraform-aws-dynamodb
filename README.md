@@ -1,4 +1,4 @@
-# terraform-aws-dynamodb [![Codefresh Build Status](https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-dynamodb?type=cf-1)](https://g.codefresh.io/public/accounts/cloudposse/pipelines/5d1cdacfa7e22eb4aa7ea776) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-dynamodb.svg)](https://github.com/cloudposse/terraform-aws-dynamodb/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
+# terraform-aws-dynamodb [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-dynamodb.svg)](https://github.com/cloudposse/terraform-aws-dynamodb/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 
 [![README Header][readme_header_img]][readme_header_link]
 
@@ -21,12 +21,9 @@
 
 
 
-  -->
-[![README Header][readme_header_img]][readme_header_link]
 
-[![Cloud Posse][logo]](https://cpco.io/homepage)
 
-# terraform-aws-dynamodb [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-dynamodb.svg)](https://github.com/cloudposse/terraform-aws-dynamodb/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
+-->
 
 Terraform module to provision a DynamoDB table with autoscaling.
 
