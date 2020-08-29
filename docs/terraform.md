@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 ## Requirements
 
 | Name | Version |
@@ -59,3 +60,4 @@
 | table\_stream\_arn | DynamoDB table stream ARN |
 | table\_stream\_label | DynamoDB table stream label |
 
+<!-- markdownlint-restore -->
