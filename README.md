@@ -197,6 +197,7 @@ Available targets:
 
 ```
 <!-- markdownlint-restore -->
+<!-- markdownlint-disable -->
 ## Requirements
 
 | Name | Version |
@@ -258,6 +259,7 @@ Available targets:
 | table\_stream\_arn | DynamoDB table stream ARN |
 | table\_stream\_label | DynamoDB table stream label |
 
+<!-- markdownlint-restore -->
 
 
 
