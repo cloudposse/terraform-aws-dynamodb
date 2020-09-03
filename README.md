@@ -197,19 +197,20 @@ Available targets:
 
 ```
 <!-- markdownlint-restore -->
+<!-- markdownlint-disable -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | terraform | >= 0.12.0 |
-| aws | ~> 2.0 |
+| aws | >= 2.0 |
 | null | ~> 2.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | ~> 2.0 |
+| aws | >= 2.0 |
 | null | ~> 2.0 |
 
 ## Inputs
@@ -258,6 +259,7 @@ Available targets:
 | table\_stream\_arn | DynamoDB table stream ARN |
 | table\_stream\_label | DynamoDB table stream label |
 
+<!-- markdownlint-restore -->
 
 
 
