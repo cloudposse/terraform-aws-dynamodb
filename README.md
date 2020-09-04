@@ -156,6 +156,12 @@ module "dynamodb_table" {
       non_key_attributes = ["HashKey", "RangeKey"]
     }
   ]
+
+  replicas = [
+    {
+      region_name = "us-east-1"
+    }
+  ]
 }
 ```
 

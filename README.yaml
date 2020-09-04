@@ -150,6 +150,12 @@ usage: |2-
         non_key_attributes = ["HashKey", "RangeKey"]
       }
     ]
+
+    replicas = [
+      {
+        region_name = "us-east-1"
+      }
+    ]
   }
   ```
 
