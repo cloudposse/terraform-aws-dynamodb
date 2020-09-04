@@ -186,3 +186,11 @@ variable "regex_replace_chars" {
   default     = "/[^a-zA-Z0-9-]/"
   description = "Regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`. By default only hyphens, letters and digits are allowed, all other chars are removed"
 }
+
+variable "replicas" {
+  type = list(object({
+    region_name = string
+  }))
+  default     = []
+  description = "Replica configurations in the form of a list of mapped values"
+}
