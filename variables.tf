@@ -147,6 +147,18 @@ variable "enable_autoscaler" {
   description = "Flag to enable/disable DynamoDB autoscaling"
 }
 
+variable "autoscaler_attributes" {
+  type        = list(string)
+  default     = []
+  description = "Additional attributes for the autoscaler module"
+}
+
+variable "autoscaler_tags" {
+  type        = map(string)
+  default     = {}
+  description = "Additional resource tags for the autoscaler module"
+}
+
 variable "dynamodb_attributes" {
   type = list(object({
     name = string

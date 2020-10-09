@@ -127,8 +127,8 @@ module "dynamodb_autoscaler" {
   environment                  = var.environment
   name                         = var.name
   delimiter                    = var.delimiter
-  attributes                   = var.attributes
-  tags                         = module.dynamodb_label.tags
+  attributes                   = concat(var.attributes, var.autoscaler_attributes)
+  tags                         = merge(module.dynamodb_label.tags, var.autoscaler_tags)
   dynamodb_table_name          = join("", aws_dynamodb_table.default.*.id)
   dynamodb_table_arn           = join("", aws_dynamodb_table.default.*.arn)
   dynamodb_indexes             = null_resource.global_secondary_index_names.*.triggers.name
