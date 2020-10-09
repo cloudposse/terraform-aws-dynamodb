@@ -224,6 +224,8 @@ Available targets:
 | autoscale\_min\_write\_capacity | DynamoDB autoscaling min write capacity | `number` | `5` | no |
 | autoscale\_read\_target | The target value (in %) for DynamoDB read autoscaling | `number` | `50` | no |
 | autoscale\_write\_target | The target value (in %) for DynamoDB write autoscaling | `number` | `50` | no |
+| autoscaler\_attributes | Additional attributes for the autoscaler module | `list(string)` | `[]` | no |
+| autoscaler\_tags | Additional resource tags for the autoscaler module | `map(string)` | `{}` | no |
 | billing\_mode | DynamoDB Billing mode. Can be PROVISIONED or PAY\_PER\_REQUEST | `string` | `"PROVISIONED"` | no |
 | delimiter | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes` | `string` | `"-"` | no |
 | dynamodb\_attributes | Additional DynamoDB attributes in the form of a list of mapped values | <pre>list(object({<br>    name = string<br>    type = string<br>  }))</pre> | `[]` | no |
