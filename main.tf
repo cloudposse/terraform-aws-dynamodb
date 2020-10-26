@@ -67,6 +67,7 @@ resource "aws_dynamodb_table" "default" {
 
   server_side_encryption {
     enabled = var.enable_encryption
+    kms_key_arn = var.server_side_encryption_kms_key_arn
   }
 
   point_in_time_recovery {
