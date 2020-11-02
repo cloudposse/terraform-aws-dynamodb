@@ -106,6 +106,12 @@ variable "enable_encryption" {
   description = "Enable DynamoDB server-side encryption"
 }
 
+variable "server_side_encryption_kms_key_arn" {
+  type        = string
+  default     = null
+  description = "The ARN of the CMK that should be used for the AWS KMS encryption. This attribute should only be specified if the key is different from the default DynamoDB CMK, alias/aws/dynamodb."
+}
+
 variable "enable_point_in_time_recovery" {
   type        = bool
   default     = true
