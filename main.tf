@@ -1,5 +1,5 @@
 module "dynamodb_label" {
-  source              = "git::ssh://git@github.com/jurgenweber/terraform-null-label.git?ref=master"
+  source              = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.19.2"
   enabled             = var.enabled
   namespace           = var.namespace
   stage               = var.stage
@@ -120,7 +120,7 @@ resource "aws_dynamodb_table" "default" {
 }
 
 module "dynamodb_autoscaler" {
-  source                       = "git::https://github.com/jurgenweber/terraform-aws-dynamodb-autoscaler.git?ref=master"
+  source                       = "git::https://github.com/cloudposse/terraform-aws-dynamodb-autoscaler.git?ref=0.8.1"
   enabled                      = var.enabled && var.enable_autoscaler && var.billing_mode == "PROVISIONED"
   namespace                    = var.namespace
   stage                        = var.stage
