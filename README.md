@@ -1,4 +1,6 @@
+<!-- markdownlint-disable -->
 # terraform-aws-dynamodb [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-dynamodb.svg)](https://github.com/cloudposse/terraform-aws-dynamodb/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
+<!-- markdownlint-restore -->
 
 [![README Header][readme_header_img]][readme_header_link]
 
@@ -79,7 +81,9 @@ For automated tests of the complete example using [bats](https://github.com/bats
 
 ```hcl
 module "dynamodb_table" {
-  source                       = "git::https://github.com/cloudposse/terraform-aws-dynamodb.git?ref=master"
+  source = "cloudposse/dynamodb/aws"
+  # Cloud Posse recommends pinning every module to a specific version
+  # version     = "x.x.x"
   namespace                    = "eg"
   stage                        = "dev"
   name                         = "cluster"
@@ -101,7 +105,9 @@ With additional attributes, global secondary indexes and `non_key_attributes` (s
 
 ```hcl
 module "dynamodb_table" {
-  source                       = "git::https://github.com/cloudposse/terraform-aws-dynamodb.git?ref=master"
+  source = "cloudposse/dynamodb/aws"
+  # Cloud Posse recommends pinning every module to a specific version
+  # version     = "x.x.x"
   namespace                    = "eg"
   stage                        = "dev"
   name                         = "cluster"
@@ -202,16 +208,16 @@ Available targets:
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12.0 |
+| terraform | >= 0.12.26 |
 | aws | >= 2.0 |
-| null | ~> 2.0 |
+| null | >= 2.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | aws | >= 2.0 |
-| null | ~> 2.0 |
+| null | >= 2.0 |
 
 ## Inputs
 
@@ -414,8 +420,10 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 
 ### Contributors
 
+<!-- markdownlint-disable -->
 |  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Jamie Nelson][Jamie-BitFlight_avatar]][Jamie-BitFlight_homepage]<br/>[Jamie Nelson][Jamie-BitFlight_homepage] | [![Daren Desjardins][darend_avatar]][darend_homepage]<br/>[Daren Desjardins][darend_homepage] | [![Maarten van der Hoef][maartenvanderhoef_avatar]][maartenvanderhoef_homepage]<br/>[Maarten van der Hoef][maartenvanderhoef_homepage] |
 |---|---|---|---|---|
+<!-- markdownlint-restore -->
 
   [osterman_homepage]: https://github.com/osterman
   [osterman_avatar]: https://img.cloudposse.com/150x150/https://github.com/osterman.png
