@@ -110,7 +110,7 @@ resource "aws_dynamodb_table" "default" {
 }
 
 module "dynamodb_autoscaler" {
-  source = "cloudposse/dynamodb-autoscaler/aws"
+  source  = "cloudposse/dynamodb-autoscaler/aws"
   version = "0.9.0"
   enabled = local.enabled && var.enable_autoscaler && var.billing_mode == "PROVISIONED"
 
