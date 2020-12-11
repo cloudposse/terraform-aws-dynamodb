@@ -73,7 +73,9 @@ usage: |2-
 
   ```hcl
   module "dynamodb_table" {
-    source                       = "git::https://github.com/cloudposse/terraform-aws-dynamodb.git?ref=master"
+    source = "cloudposse/dynamodb/aws"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version     = "x.x.x"
     namespace                    = "eg"
     stage                        = "dev"
     name                         = "cluster"
@@ -95,7 +97,9 @@ usage: |2-
 
   ```hcl
   module "dynamodb_table" {
-    source                       = "git::https://github.com/cloudposse/terraform-aws-dynamodb.git?ref=master"
+    source = "cloudposse/dynamodb/aws"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version     = "x.x.x"
     namespace                    = "eg"
     stage                        = "dev"
     name                         = "cluster"

@@ -1,43 +1,41 @@
-name: 'auto-readme'
-
+name: "auto-readme"
 on:
-  # Open a PR to update README on merge to master (as necessary)
-  push:
-    branches:
-      - master
-
-  # Open a PR to update README for all PRs (as necessary)
-  pull_request: 
-    types: [opened, synchronize, reopened]
-
-  # Update README nightly
   schedule:
-    - cron:  '0 0 * * *'
+  # Update README.md nightly
+  - cron:  '0 4 * * *'
 
 jobs:
   update:
+    if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v1
-      - name: readme/update
-        shell: bash
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_BOT_TOKEN }}"
-        run: |
-          make init
-          make readme/deps
-          make readme
-      - name: Create Pull Request
-        uses: cloudposse/actions/github/create-pull-request@0.4.0
-        with: 
-          labels: automated pr
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_BOT_TOKEN }}
-          COMMIT_MESSAGE: Update README.md
-          PULL_REQUEST_TITLE: Automatic Update of README.md
-          PULL_REQUEST_BODY: |-
-            This is an auto-generated PR which updates the `README.md` from the `README.yaml` 
-            using the [`cloudposse/build-harness`](https://github.com/cloudposse/build-harness).
-          PULL_REQUEST_BRANCH: github-actions/auto-readme
-          BRANCH_SUFFIX: none
+    - uses: actions/checkout@v2
+
+    - name: Update readme
+      shell: bash
+      id: update
+      env:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      run: |
+        make init
+        make readme/build
+
+    - name: Create Pull Request
+      uses: cloudposse/actions/github/create-pull-request@0.20.0
+      with:
+        token: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
+        commit-message: Update README.md and docs
+        title: Update README.md and docs
+        body: |-
+          ## what
+          This is an auto-generated PR that updates the README.md and docs
+
+          ## why
+          To have most recent changes of README.md and doc from origin templates
+
+        branch: auto-update/readme
+        base: master
+        delete-branch: true
+        labels: |
+          auto-update
+          readme

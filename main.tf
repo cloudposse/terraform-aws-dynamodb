@@ -1,17 +1,6 @@
-module "dynamodb_label" {
-  source              = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.17.0"
-  enabled             = var.enabled
-  namespace           = var.namespace
-  stage               = var.stage
-  environment         = var.environment
-  name                = var.name
-  delimiter           = var.delimiter
-  attributes          = var.attributes
-  tags                = var.tags
-  regex_replace_chars = var.regex_replace_chars
-}
-
 locals {
+  enabled = module.this.enabled
+
   attributes = concat(
     [
       {
@@ -33,7 +22,7 @@ locals {
 }
 
 resource "null_resource" "global_secondary_index_names" {
-  count = (var.enabled ? 1 : 0) * length(var.global_secondary_index_map)
+  count = (local.enabled ? 1 : 0) * length(var.global_secondary_index_map)
 
   # Convert the multi-item `global_secondary_index_map` into a simple `map` with just one item `name` since `triggers` does not support `lists` in `maps` (which are used in `non_key_attributes`)
   # See `examples/complete`
@@ -44,7 +33,7 @@ resource "null_resource" "global_secondary_index_names" {
 }
 
 resource "null_resource" "local_secondary_index_names" {
-  count = (var.enabled ? 1 : 0) * length(var.local_secondary_index_map)
+  count = (local.enabled ? 1 : 0) * length(var.local_secondary_index_map)
 
   # Convert the multi-item `local_secondary_index_map` into a simple `map` with just one item `name` since `triggers` does not support `lists` in `maps` (which are used in `non_key_attributes`)
   # See `examples/complete`
@@ -55,8 +44,8 @@ resource "null_resource" "local_secondary_index_names" {
 }
 
 resource "aws_dynamodb_table" "default" {
-  count            = var.enabled ? 1 : 0
-  name             = module.dynamodb_label.id
+  count            = local.enabled ? 1 : 0
+  name             = module.this.id
   billing_mode     = var.billing_mode
   read_capacity    = var.autoscale_min_read_capacity
   write_capacity   = var.autoscale_min_write_capacity
@@ -117,19 +106,16 @@ resource "aws_dynamodb_table" "default" {
     enabled        = var.ttl_attribute != "" && var.ttl_attribute != null ? true : false
   }
 
-  tags = module.dynamodb_label.tags
+  tags = module.this.tags
 }
 
 module "dynamodb_autoscaler" {
-  source                       = "git::https://github.com/cloudposse/terraform-aws-dynamodb-autoscaler.git?ref=tags/0.8.1"
-  enabled                      = var.enabled && var.enable_autoscaler && var.billing_mode == "PROVISIONED"
-  namespace                    = var.namespace
-  stage                        = var.stage
-  environment                  = var.environment
-  name                         = var.name
-  delimiter                    = var.delimiter
-  attributes                   = concat(var.attributes, var.autoscaler_attributes)
-  tags                         = merge(module.dynamodb_label.tags, var.autoscaler_tags)
+  source = "cloudposse/dynamodb-autoscaler/aws"
+  version = "0.9.0"
+  enabled = local.enabled && var.enable_autoscaler && var.billing_mode == "PROVISIONED"
+
+  attributes                   = concat(module.this.attributes, var.autoscaler_attributes)
+  tags                         = merge(module.this.tags, var.autoscaler_tags)
   dynamodb_table_name          = join("", aws_dynamodb_table.default.*.id)
   dynamodb_table_arn           = join("", aws_dynamodb_table.default.*.arn)
   dynamodb_indexes             = null_resource.global_secondary_index_names.*.triggers.name
@@ -139,4 +125,6 @@ module "dynamodb_autoscaler" {
   autoscale_max_read_capacity  = var.autoscale_max_read_capacity
   autoscale_min_write_capacity = var.autoscale_min_write_capacity
   autoscale_max_write_capacity = var.autoscale_max_write_capacity
+
+  context = module.this.context
 }

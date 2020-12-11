@@ -3,10 +3,8 @@ provider "aws" {
 }
 
 module "dynamodb_table" {
-  source            = "../../"
-  namespace         = var.namespace
-  stage             = var.stage
-  name              = var.name
+  source = "../../"
+
   hash_key          = "HashKey"
   range_key         = "RangeKey"
   enable_autoscaler = false
@@ -52,4 +50,6 @@ module "dynamodb_table" {
       non_key_attributes = ["HashKey", "RangeKey"]
     }
   ]
+
+  context = module.this.context
 }
