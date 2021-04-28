@@ -155,9 +155,7 @@ usage: |2-
       }
     ]
 
-    replicas = [
-    "us-east-1"
-  ]
+    replicas = ["us-east-1"]
   }
   ```
 
