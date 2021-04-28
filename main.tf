@@ -101,6 +101,13 @@ resource "aws_dynamodb_table" "default" {
     }
   }
 
+  dynamic "replica" {
+    for_each = var.replicas
+    content {
+      region_name = replica.value
+    }
+  }
+
   ttl {
     attribute_name = var.ttl_attribute
     enabled        = var.ttl_attribute != "" && var.ttl_attribute != null ? true : false
