@@ -152,7 +152,7 @@ variable "local_secondary_index_map" {
 }
 
 variable "replicas" {
-  type = list(string)
+  type        = list(string)
   default     = null
   description = "List of regions to create replica"
 }
