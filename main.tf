@@ -51,8 +51,9 @@ resource "aws_dynamodb_table" "default" {
   write_capacity   = var.autoscale_min_write_capacity
   hash_key         = var.hash_key
   range_key        = var.range_key
-  stream_enabled   = var.enable_streams
-  stream_view_type = var.enable_streams ? var.stream_view_type : ""
+  stream_enabled   = length(var.replicas) > 0 ? true : var.enable_streams
+  stream_view_type = length(var.replicas) > 0 || var.enable_streams ? var.stream_view_type : ""
+
 
   server_side_encryption {
     enabled     = var.enable_encryption
@@ -98,6 +99,13 @@ resource "aws_dynamodb_table" "default" {
       non_key_attributes = lookup(local_secondary_index.value, "non_key_attributes", null)
       projection_type    = local_secondary_index.value.projection_type
       range_key          = local_secondary_index.value.range_key
+    }
+  }
+
+  dynamic "replica" {
+    for_each = var.replicas
+    content {
+      region_name = replica.value
     }
   }
 

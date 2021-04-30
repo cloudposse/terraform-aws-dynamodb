@@ -154,6 +154,8 @@ usage: |2-
         non_key_attributes = ["HashKey", "RangeKey"]
       }
     ]
+
+    replicas = ["us-east-1"]
   }
   ```
 
