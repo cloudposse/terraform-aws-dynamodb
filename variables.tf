@@ -99,6 +99,12 @@ variable "ttl_attribute" {
   description = "DynamoDB table TTL attribute"
 }
 
+variable "ttl_enabled" {
+  type        = bool
+  default     = true
+  description = "Set to false to disable DynamoDB table TTL"
+}
+
 variable "enable_autoscaler" {
   type        = bool
   default     = false
