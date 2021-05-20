@@ -10,3 +10,5 @@
 
 **/.build-harness
 **/build-harness
+
+**/.terraform.lock.hcl
