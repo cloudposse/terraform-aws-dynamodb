@@ -5,7 +5,7 @@ provider "aws" {
 module "dynamodb_table_1" {
   source = "../../"
 
-  name = "first"
+  name              = "first"
   hash_key          = "HashKey"
   range_key         = "RangeKey"
   enable_autoscaler = true
@@ -58,7 +58,7 @@ module "dynamodb_table_1" {
 module "dynamodb_table_2" {
   source = "../../"
 
-  name = "second"
+  name              = "second"
   hash_key          = "HashKey"
   range_key         = "RangeKey"
   enable_autoscaler = true
