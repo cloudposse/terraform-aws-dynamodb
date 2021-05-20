@@ -120,6 +120,9 @@ resource "aws_dynamodb_table" "default" {
 module "dynamodb_autoscaler" {
   source  = "cloudposse/dynamodb-autoscaler/aws"
   version = "0.13.0"
+
+  count = local.enabled && var.enable_autoscaler && var.billing_mode == "PROVISIONED" ? 1 : 0
+
   enabled = local.enabled && var.enable_autoscaler && var.billing_mode == "PROVISIONED"
 
   attributes                   = concat(module.this.attributes, var.autoscaler_attributes)
