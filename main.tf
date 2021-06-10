@@ -114,7 +114,7 @@ resource "aws_dynamodb_table" "default" {
     enabled        = var.ttl_enabled
   }
 
-  tags = var.enable_tags ? module.this.tags : null
+  tags = var.tags_enabled ? module.this.tags : null
 }
 
 module "dynamodb_autoscaler" {
@@ -123,7 +123,7 @@ module "dynamodb_autoscaler" {
   enabled = local.enabled && var.enable_autoscaler && var.billing_mode == "PROVISIONED"
 
   attributes                   = concat(module.this.attributes, var.autoscaler_attributes)
-  tags                         = var.enable_tags ? merge(module.this.tags, var.autoscaler_tags) : null
+  tags                         = var.tags_enabled ? merge(module.this.tags, var.autoscaler_tags) : null
   dynamodb_table_name          = join("", aws_dynamodb_table.default.*.id)
   dynamodb_table_arn           = join("", aws_dynamodb_table.default.*.arn)
   dynamodb_indexes             = null_resource.global_secondary_index_names.*.triggers.name

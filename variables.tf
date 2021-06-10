@@ -163,7 +163,7 @@ variable "replicas" {
   description = "List of regions to create replica"
 }
 
-variable "enable_tags" {
+variable "tags_enabled" {
   type        = bool
   default     = true
   description = "Set to `false` to disable tagging. This can be helpful if you're managing tables on dynamodb-local with terraform as it doesn't support tagging."
