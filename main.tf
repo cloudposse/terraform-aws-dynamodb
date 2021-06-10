@@ -109,9 +109,12 @@ resource "aws_dynamodb_table" "default" {
     }
   }
 
-  ttl {
-    attribute_name = var.ttl_attribute
-    enabled        = var.ttl_enabled
+  dynamic "ttl" {
+    for_each = var.ttl_enabled ? [1] : []
+    content {
+      attribute_name = var.ttl_attribute
+      enabled        = var.ttl_enabled
+    }
   }
 
   tags = var.tags_enabled ? module.this.tags : null
@@ -119,7 +122,7 @@ resource "aws_dynamodb_table" "default" {
 
 module "dynamodb_autoscaler" {
   source  = "cloudposse/dynamodb-autoscaler/aws"
-  version = "0.13.0"
+  version = "0.13.1"
   enabled = local.enabled && var.enable_autoscaler && var.billing_mode == "PROVISIONED"
 
   attributes                   = concat(module.this.attributes, var.autoscaler_attributes)
