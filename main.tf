@@ -109,9 +109,12 @@ resource "aws_dynamodb_table" "default" {
     }
   }
 
-  ttl {
-    attribute_name = var.ttl_attribute
-    enabled        = var.ttl_enabled
+  dynamic "ttl" {
+    for_each = var.ttl_enabled ? [1] : []
+    content {
+      attribute_name = var.ttl_attribute
+      enabled        = var.ttl_enabled
+    }
   }
 
   tags = module.this.tags
