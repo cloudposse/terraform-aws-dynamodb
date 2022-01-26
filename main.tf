@@ -47,8 +47,8 @@ resource "aws_dynamodb_table" "default" {
   count            = local.enabled ? 1 : 0
   name             = module.this.id
   billing_mode     = var.billing_mode
-  read_capacity    = var.autoscale_min_read_capacity
-  write_capacity   = var.autoscale_min_write_capacity
+  read_capacity    = var.billing_mode == "PAY_PER_REQUEST" ? null : var.autoscale_min_read_capacity
+  write_capacity   = var.billing_mode == "PAY_PER_REQUEST" ? null : var.autoscale_min_write_capacity
   hash_key         = var.hash_key
   range_key        = var.range_key
   stream_enabled   = length(var.replicas) > 0 ? true : var.enable_streams
