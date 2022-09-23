@@ -53,6 +53,7 @@ resource "aws_dynamodb_table" "default" {
   range_key        = var.range_key
   stream_enabled   = length(var.replicas) > 0 ? true : var.enable_streams
   stream_view_type = length(var.replicas) > 0 || var.enable_streams ? var.stream_view_type : ""
+  table_class      = var.table_class
 
 
   server_side_encryption {

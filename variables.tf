@@ -168,3 +168,9 @@ variable "tags_enabled" {
   default     = true
   description = "Set to `false` to disable tagging. This can be helpful if you're managing tables on dynamodb-local with terraform as it doesn't support tagging."
 }
+
+variable "table_class" {
+  type        = string
+  default     = "STANDARD"
+  description = "DynamoDB storage class of the table. Can be STANDARD or STANDARD_INFREQUENT_ACCESS"
+}
