@@ -63,7 +63,7 @@ description: |-
 
   ## Requirements
 
-  This module requires [AWS Provider](https://github.com/terraform-providers/terraform-provider-aws) `>= 1.17.0`
+  This module requires [AWS Provider](https://github.com/terraform-providers/terraform-provider-aws) `>= 4.22.0`
 # How to use this project
 usage: |2-
 
