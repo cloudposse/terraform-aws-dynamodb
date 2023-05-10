@@ -178,5 +178,5 @@ variable "table_class" {
 variable "deletion_protection_enabled" {
   type        = bool
   default     = false
-  description = "Enable/disable DynamoDB table deletion protection"
+  description = "Enable/Disable DynamoDB table deletion protection"
 }
