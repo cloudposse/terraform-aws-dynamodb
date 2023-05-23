@@ -117,10 +117,10 @@ resource "aws_dynamodb_table" "default" {
   dynamic "replica" {
     for_each = local.replica_configurations
     content {
-      region_name = replica.value.region
       kms_key_arn            = replica.value.kms_key_arn
-      propagate_tags         = replica.value.propagate_tags
       point_in_time_recovery = replica.value.point_in_time_recovery
+      propagate_tags         = replica.value.propagate_tags
+      region_name            = replica.value.region
     }
   }
 
