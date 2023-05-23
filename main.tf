@@ -62,8 +62,8 @@ resource "aws_dynamodb_table" "default" {
   write_capacity   = var.billing_mode == "PAY_PER_REQUEST" ? null : var.autoscale_min_write_capacity
   hash_key         = var.hash_key
   range_key        = var.range_key
-  stream_enabled   = length(var.replicas) > 0 ? true : var.enable_streams
-  stream_view_type = length(var.replicas) > 0 || var.enable_streams ? var.stream_view_type : ""
+  stream_enabled   = length(local.replica_configurations) > 0 ? true : var.enable_streams
+  stream_view_type = length(local.replica_configurations) > 0 || var.enable_streams ? var.stream_view_type : ""
   table_class      = var.table_class
 
 
