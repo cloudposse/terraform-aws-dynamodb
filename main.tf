@@ -19,6 +19,17 @@ locals {
   from_index = length(var.range_key) > 0 ? 0 : 1
 
   attributes_final = slice(local.attributes, local.from_index, length(local.attributes))
+
+  # Build replica configurations
+  replica_configurations = length(var.replica_configurations) > 0 ? var.replica_configurations : [
+    for region in var.replicas : {
+      region = region
+      # If kms_key_arn is null, the provider uses the default key
+      kms_key_arn            = null
+      propagate_tags         = false
+      point_in_time_recovery = false
+    }
+  ] 
 }
 
 resource "null_resource" "global_secondary_index_names" {
@@ -104,13 +115,12 @@ resource "aws_dynamodb_table" "default" {
   }
 
   dynamic "replica" {
-    for_each = var.replicas
+    for_each = local.replica_configurations
     content {
-      region_name = replica.value
-      # If kms_key_arn is null, the provider uses the default key
-      kms_key_arn            = null
-      propagate_tags         = false
-      point_in_time_recovery = false
+      region_name = replica.value.region
+      kms_key_arn            = replica.value.kms_key_arn
+      propagate_tags         = replica.value.propagate_tags
+      point_in_time_recovery = replica.value.point_in_time_recovery
     }
   }
 

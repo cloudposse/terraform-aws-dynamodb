@@ -163,6 +163,17 @@ variable "replicas" {
   description = "List of regions to create replica"
 }
 
+variable "replica_configurations" {
+  type = list(object({
+    kms_key_arn            = string
+    point_in_time_recovery = bool
+    propagate_tags         = bool
+    region                 = string
+  }))
+  default     = []
+  description = "List of configurations for replicas"
+}
+
 variable "tags_enabled" {
   type        = bool
   default     = true
