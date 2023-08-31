@@ -174,3 +174,9 @@ variable "table_class" {
   default     = "STANDARD"
   description = "DynamoDB storage class of the table. Can be STANDARD or STANDARD_INFREQUENT_ACCESS"
 }
+
+variable "deletion_protection_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable/disable DynamoDB table deletion protection"
+}
