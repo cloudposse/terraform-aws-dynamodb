@@ -186,17 +186,17 @@ variable "import_table" {
     # Valid values are GZIP, ZSTD and NONE
     input_compression_type = optional(string, null)
     # Valid values are CSV, DYNAMODB_JSON, and ION.
-    input_format           = string
-    input_format_options   = optional(object({
+    input_format = string
+    input_format_options = optional(object({
       csv = object({
-        delimiter = string
+        delimiter   = string
         header_list = list(string)
       })
     }), null)
-    s3_bucket_source       = object({
-      bucket  = string
+    s3_bucket_source = object({
+      bucket       = string
       bucket_owner = optional(string)
-      key_prefix  = optional(string)
+      key_prefix   = optional(string)
     })
   })
   default     = null
