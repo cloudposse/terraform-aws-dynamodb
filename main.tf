@@ -101,7 +101,7 @@ resource "aws_dynamodb_table" "default" {
       input_format = var.import_table.import_format
 
       dynamic "input_format_options" {
-        for_each = var.import_table.import_format_options != null ? [1] : []
+        for_each = lookup(var.import_table, "import_format_options", null) != null ? [1] : []
 
         content {
           csv {
@@ -112,9 +112,9 @@ resource "aws_dynamodb_table" "default" {
       }
 
       s3_bucket_source {
-        s3_bucket = var.import_table.s3_bucket_source.bucket
-        s3_key_prefix = var.import_table.s3_bucket_source.key_prefix
-        s3_bucket_owner = var.import_table.s3_bucket_source.bucket_owner
+        bucket = var.import_table.s3_bucket_source.bucket
+        bucket_owner = var.import_table.s3_bucket_source.bucket_owner
+        key_prefix = var.import_table.s3_bucket_source.key_prefix
       }
     }
   }
