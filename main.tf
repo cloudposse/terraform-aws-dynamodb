@@ -55,7 +55,6 @@ resource "aws_dynamodb_table" "default" {
   stream_view_type            = length(var.replicas) > 0 || var.enable_streams ? var.stream_view_type : ""
   table_class                 = var.table_class
   deletion_protection_enabled = var.deletion_protection_enabled
-  import_table                = var.import_table
 
   server_side_encryption {
     enabled     = var.enable_encryption
@@ -91,6 +90,32 @@ resource "aws_dynamodb_table" "default" {
       range_key          = lookup(global_secondary_index.value, "range_key", null)
       read_capacity      = lookup(global_secondary_index.value, "read_capacity", null)
       write_capacity     = lookup(global_secondary_index.value, "write_capacity", null)
+    }
+  }
+
+  dynamic "import_table" {
+    for_each = var.import_table != null ? [1] : []
+
+    content {
+      input_compression_type = var.import_table.input_compression_type
+      input_format = var.import_table.import_format
+
+      dynamic "input_format_options" {
+        for_each = var.import_table.import_format_options != null ? [1] : []
+
+        content {
+          csv {
+            delimiter = var.import_table.import_format_options.csv.delimiter
+            header_list = var.import_table.import_format_options.csv.header_list
+          }
+        }
+      }
+
+      s3_bucket_source {
+        s3_bucket = var.import_table.s3_bucket_source.bucket
+        s3_key_prefix = var.import_table.s3_bucket_source.key_prefix
+        s3_bucket_owner = var.import_table.s3_bucket_source.bucket_owner
+      }
     }
   }
 
