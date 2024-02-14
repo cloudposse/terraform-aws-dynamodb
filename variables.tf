@@ -180,3 +180,25 @@ variable "deletion_protection_enabled" {
   default     = false
   description = "Enable/disable DynamoDB table deletion protection"
 }
+
+variable "import_table" {
+  type = object({
+    # Valid values are GZIP, ZSTD and NONE
+    input_compression_type = optional(string, null)
+    # Valid values are CSV, DYNAMODB_JSON, and ION.
+    input_format = string
+    input_format_options = optional(object({
+      csv = object({
+        delimiter   = string
+        header_list = list(string)
+      })
+    }), null)
+    s3_bucket_source = object({
+      bucket       = string
+      bucket_owner = optional(string)
+      key_prefix   = optional(string)
+    })
+  })
+  default     = null
+  description = "Import Amazon S3 data into a new table."
+}

@@ -93,6 +93,32 @@ resource "aws_dynamodb_table" "default" {
     }
   }
 
+  dynamic "import_table" {
+    for_each = var.import_table != null ? [1] : []
+
+    content {
+      input_compression_type = var.import_table.input_compression_type
+      input_format           = var.import_table.input_format
+
+      dynamic "input_format_options" {
+        for_each = lookup(var.import_table, "input_format_options", null) != null ? [1] : []
+
+        content {
+          csv {
+            delimiter   = var.import_table.input_format_options.csv.delimiter
+            header_list = var.import_table.input_format_options.csv.header_list
+          }
+        }
+      }
+
+      s3_bucket_source {
+        bucket       = var.import_table.s3_bucket_source.bucket
+        bucket_owner = var.import_table.s3_bucket_source.bucket_owner
+        key_prefix   = var.import_table.s3_bucket_source.key_prefix
+      }
+    }
+  }
+
   dynamic "local_secondary_index" {
     for_each = var.local_secondary_index_map
     content {
