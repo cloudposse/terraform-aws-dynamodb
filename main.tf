@@ -98,15 +98,15 @@ resource "aws_dynamodb_table" "default" {
 
     content {
       input_compression_type = var.import_table.input_compression_type
-      input_format = var.import_table.import_format
+      input_format = var.import_table.input_format
 
       dynamic "input_format_options" {
-        for_each = lookup(var.import_table, "import_format_options", null) != null ? [1] : []
+        for_each = lookup(var.import_table, "input_format_options", null) != null ? [1] : []
 
         content {
           csv {
-            delimiter = var.import_table.import_format_options.csv.delimiter
-            header_list = var.import_table.import_format_options.csv.header_list
+            delimiter = var.import_table.input_format_options.csv.delimiter
+            header_list = var.import_table.input_format_options.csv.header_list
           }
         }
       }
