@@ -55,6 +55,7 @@ resource "aws_dynamodb_table" "default" {
   stream_view_type            = length(var.replicas) > 0 || var.enable_streams ? var.stream_view_type : ""
   table_class                 = var.table_class
   deletion_protection_enabled = var.deletion_protection_enabled
+  import_table                = var.import_table
 
   server_side_encryption {
     enabled     = var.enable_encryption
