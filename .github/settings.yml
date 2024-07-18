@@ -5,3 +5,4 @@ repository:
   description: Terraform module that implements AWS DynamoDB with support for AutoScaling
   homepage: https://cloudposse.com/accelerate
   topics: terraform, terraform-modules, autoscaling, aws, dynamodb, dynamodb-table, dynamodb-database, hcl2
+
