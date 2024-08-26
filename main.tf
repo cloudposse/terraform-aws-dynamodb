@@ -169,3 +169,13 @@ module "dynamodb_autoscaler" {
 
   context = module.this.context
 }
+
+variable "resource_policy" {}
+
+resource "aws_dynamodb_resource_policy" "default" {
+  count        = local.enabled ? 1 : 0
+  resource_arn = join("", aws_dynamodb_table.default[*].arn)
+  policy       = var.resource_policy
+  
+  tags = module.this.tags
+}
