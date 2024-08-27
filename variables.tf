@@ -215,8 +215,15 @@ variable "attach_resource_policy" {
   description = "Enable the resource policy settings for the table."
 }
 
-variable "resource_policy" {
+variable "table_resource_policy" {
   type        = string
   default     = null
-  description = "An Amazon Web Services resource-based policy document in JSON format. Make sure it's less than 20k including spaces."
+  description = "An Amazon Web Services resource-based policy document in JSON format setting the permissions for the Dynamo DB table. Make sure it's less than 20k including spaces."
 }
+
+variable "stream_resource_policy" {
+  type        = string
+  default     = null
+  description = "An Amazon Web Services resource-based policy document in JSON format setting the permissions for the Dynamo DB stream. Make sure it's less than 20k including spaces."
+}
+
