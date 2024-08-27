@@ -172,7 +172,7 @@ module "dynamodb_autoscaler" {
 
 resource "aws_dynamodb_resource_policy" "table" {
   count        = local.enabled && var.table_resource_policy != null ? 1 : 0
-  resource_arn = join("", aws_dynamodb_table.default[*].stream_arn)
+  resource_arn = join("", aws_dynamodb_table.default[*].arn)
   policy       = var.table_resource_policy
 }
 
