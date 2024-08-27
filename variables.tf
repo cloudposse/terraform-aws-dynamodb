@@ -208,3 +208,15 @@ variable "import_table" {
   default     = null
   description = "Import Amazon S3 data into a new table."
 }
+
+variable "attach_resource_policy" {
+  type        = bool
+  default     = false
+  description = "Enable the resource policy settings for the table."
+}
+
+variable "resource_policy" {
+  type        = string
+  default     = null
+  description = "An Amazon Web Services resource-based policy document in JSON format. Make sure it's less than 20k including spaces."
+}
