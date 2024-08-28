@@ -5,10 +5,12 @@ provider "aws" {
 module "dynamodb_table_1" {
   source = "../../"
 
-  name              = "first"
-  hash_key          = "HashKey"
-  range_key         = "RangeKey"
-  enable_autoscaler = true
+  name                   = "first"
+  hash_key               = "HashKey"
+  range_key              = "RangeKey"
+  enable_autoscaler      = true
+  table_resource_policy  = "{}"
+  stream_resource_policy = "{}"
 
   dynamodb_attributes = [
     {
