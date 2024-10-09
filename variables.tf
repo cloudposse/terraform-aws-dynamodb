@@ -208,3 +208,16 @@ variable "import_table" {
   default     = null
   description = "Import Amazon S3 data into a new table."
 }
+
+variable "table_resource_policy" {
+  type        = string
+  default     = null
+  description = "An Amazon Web Services resource-based policy document in JSON format setting the permissions for the Dynamo DB table. Make sure it's less than 20k including spaces."
+}
+
+variable "stream_resource_policy" {
+  type        = string
+  default     = null
+  description = "An Amazon Web Services resource-based policy document in JSON format setting the permissions for the Dynamo DB stream. Make sure it's less than 20k including spaces."
+}
+
