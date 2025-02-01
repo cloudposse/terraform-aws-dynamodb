@@ -208,3 +208,9 @@ variable "import_table" {
   default     = null
   description = "Import Amazon S3 data into a new table."
 }
+
+variable "propagate_tags_to_replica" {
+  type        = bool
+  default     = false
+  description = "Set to `true` to enable tags propagation on replica. Changes to tags only move in one direction: from global (source) to replica."
+}
