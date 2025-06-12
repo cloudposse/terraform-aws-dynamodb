@@ -149,7 +149,7 @@ variable "global_secondary_index_map" {
     write_capacity     = number
   }))
   default     = []
-  description = "Additional global secondary indexes in the form of a list of mapped values"
+  description = "Additional global secondary indexes in the form of a list of mapped values. \n**Note**: Any changes made to the GSIs will be ignored to avoid drift caused by auto-scaling ([related issue](https://github.com/hashicorp/terraform-provider-aws/issues/671))."
 }
 
 variable "local_secondary_index_map" {
