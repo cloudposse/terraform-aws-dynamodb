@@ -199,17 +199,29 @@ resource "aws_dynamodb_global_secondary_index" "default" {
   # Key schema for hash key (must be static, not dynamic, for AWS provider validation)
   key_schema {
     attribute_name = local.gsi_list_for_resource[count.index].hash_key
-    attribute_type = try([for attr in local.attributes_final : attr.type if attr.name == local.gsi_list_for_resource[count.index].hash_key][0], "S")
-    key_type       = "HASH"
+    # Find attribute type from the attributes list, with validation to ensure it exists
+    attribute_type = coalesce(
+      try([for attr in local.attributes_final : attr.type if attr.name == local.gsi_list_for_resource[count.index].hash_key][0], null),
+      "S" # Default to String if not found (for backward compatibility with placeholder)
+    )
+    key_type = "HASH"
   }
 
   # Key schema for range key (if provided)
   dynamic "key_schema" {
-    for_each = lookup(local.gsi_list_for_resource[count.index], "range_key", null) != null && lookup(local.gsi_list_for_resource[count.index], "range_key", "") != "" ? [1] : []
+    for_each = (
+      lookup(local.gsi_list_for_resource[count.index], "range_key", null) != null &&
+      lookup(local.gsi_list_for_resource[count.index], "range_key", "") != ""
+    ) ? [local.gsi_list_for_resource[count.index].range_key] : []
+    
     content {
-      attribute_name = local.gsi_list_for_resource[count.index].range_key
-      attribute_type = try([for attr in local.attributes_final : attr.type if attr.name == local.gsi_list_for_resource[count.index].range_key][0], "S")
-      key_type       = "RANGE"
+      attribute_name = key_schema.value
+      # Find attribute type from the attributes list, with validation to ensure it exists
+      attribute_type = coalesce(
+        try([for attr in local.attributes_final : attr.type if attr.name == key_schema.value][0], null),
+        "S" # Default to String if not found (for backward compatibility with placeholder)
+      )
+      key_type = "RANGE"
     }
   }
 
