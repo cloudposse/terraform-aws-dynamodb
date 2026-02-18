@@ -69,6 +69,13 @@ description: |-
   ## Requirements
 
   This module requires [AWS Provider](https://github.com/terraform-providers/terraform-provider-aws) `>= 6.28.0`
+
+  **IMPORTANT:** Due to the inclusion of experimental AWS provider features, all users must set the following environment variable before running Terraform:
+  ```bash
+  export TF_AWS_EXPERIMENT_dynamodb_global_secondary_index=1
+  ```
+  
+  This is required even if you're not using the experimental `global_secondary_index_resource_enabled` feature.
 # How to use this project
 usage: |2-
 

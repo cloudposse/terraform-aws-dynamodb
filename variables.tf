@@ -213,17 +213,23 @@ variable "global_secondary_index_resource_enabled" {
   type        = bool
   default     = false
   description = <<-EOT
-    Set to `true` to use the experimental `aws_dynamodb_global_secondary_index` resource instead of the inline `global_secondary_index` block.
+    **EXPERIMENTAL FEATURE** - Set to `true` to use the experimental `aws_dynamodb_global_secondary_index` resource instead of the inline `global_secondary_index` block.
     
     When enabled, the `global_secondary_index_map` variable will be used to create standalone `aws_dynamodb_global_secondary_index` resources instead of inline blocks.
     
-    **IMPORTANT:** To use this feature, you **MUST** set the environment variable `TF_AWS_EXPERIMENT_dynamodb_global_secondary_index=1` before running Terraform commands (init, plan, apply, validate, etc.).
+    **CRITICAL REQUIREMENT:** 
+    Due to AWS provider limitations, ALL users of this module (even those not using this feature) MUST set the environment variable:
+    ```
+    export TF_AWS_EXPERIMENT_dynamodb_global_secondary_index=1
+    ```
+    This must be set before running ANY Terraform commands (init, plan, apply, validate, etc.), otherwise validation will fail.
     
-    **WARNING:** 
-    - Do NOT change this value on an existing table with Global Secondary Indexes already created. This will cause Terraform to attempt to recreate the indexes.
-    - This is an EXPERIMENTAL feature that may change or be removed in future AWS provider versions.
+    **WARNINGS:** 
+    - Do NOT change this value on an existing table with Global Secondary Indexes. This will cause Terraform to recreate the indexes.
+    - This is an EXPERIMENTAL AWS provider feature that may change or be removed without notice.
     - Not covered by any SLA or support agreement.
+    - Not suitable for production workloads.
     
-    This feature requires AWS Provider version >= 6.28.0.
+    Requires AWS Provider >= 6.28.0.
     EOT
 }
