@@ -5,7 +5,9 @@ provider "aws" {
 module "dynamodb_table_with_experimental_gsi" {
   source = "../../"
 
-  name                                    = "experimental-gsi-test"
+  namespace                               = "eg"
+  stage                                   = "test"
+  name                                    = "gsi-test"
   hash_key                                = "HashKey"
   range_key                               = "RangeKey"
   enable_autoscaler                       = true
@@ -38,6 +40,4 @@ module "dynamodb_table_with_experimental_gsi" {
       non_key_attributes = ["HashKey", "RangeKey"]
     }
   ]
-
-  context = module.this.context
 }

@@ -22,20 +22,10 @@ locals {
 
   attributes_final = slice(local.attributes, local.from_index, length(local.attributes))
 
-  # For experimental GSI resource: use actual GSI map when enabled, single placeholder when disabled for validation
-  # This prevents validation errors with the experimental resource when count = 0
-  gsi_list_for_resource = local.enabled && var.global_secondary_index_resource_enabled && length(var.global_secondary_index_map) > 0 ? var.global_secondary_index_map : [
-    {
-      name               = "_placeholder"
-      hash_key           = var.hash_key
-      range_key          = null
-      projection_type    = "ALL"
-      non_key_attributes = null
-      read_capacity      = null
-      write_capacity     = null
-    }
-  ]
-  gsi_count = local.enabled && var.global_secondary_index_resource_enabled ? length(var.global_secondary_index_map) : 0
+  # For experimental GSI resource: convert list to map for for_each
+  gsi_map_for_resource = local.enabled && var.global_secondary_index_resource_enabled ? {
+    for idx in var.global_secondary_index_map : idx.name => idx
+  } : {}
 }
 
 resource "null_resource" "global_secondary_index_names" {
@@ -191,18 +181,18 @@ module "dynamodb_autoscaler" {
 # WARNING: Do NOT toggle this flag on an existing table as it will cause Terraform to recreate the indexes
 # See: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_global_secondary_index
 resource "aws_dynamodb_global_secondary_index" "default" {
-  count = local.gsi_count
+  for_each = local.gsi_map_for_resource
 
   table_name = join("", aws_dynamodb_table.default[*].name)
-  index_name = local.gsi_list_for_resource[count.index].name
+  index_name = each.value.name
 
   # Key schema for hash key (must be static, not dynamic, for AWS provider validation)
   key_schema {
-    attribute_name = local.gsi_list_for_resource[count.index].hash_key
+    attribute_name = each.value.hash_key
     # Find attribute type from the attributes list, with validation to ensure it exists
     attribute_type = coalesce(
-      try([for attr in local.attributes_final : attr.type if attr.name == local.gsi_list_for_resource[count.index].hash_key][0], null),
-      "S" # Default to String if not found (for backward compatibility with placeholder)
+      try([for attr in local.attributes_final : attr.type if attr.name == each.value.hash_key][0], null),
+      "S" # Default to String if not found (for backward compatibility)
     )
     key_type = "HASH"
   }
@@ -210,16 +200,16 @@ resource "aws_dynamodb_global_secondary_index" "default" {
   # Key schema for range key (if provided)
   dynamic "key_schema" {
     for_each = (
-      lookup(local.gsi_list_for_resource[count.index], "range_key", null) != null &&
-      lookup(local.gsi_list_for_resource[count.index], "range_key", "") != ""
-    ) ? [local.gsi_list_for_resource[count.index].range_key] : []
-    
+      lookup(each.value, "range_key", null) != null &&
+      lookup(each.value, "range_key", "") != ""
+    ) ? [each.value.range_key] : []
+
     content {
       attribute_name = key_schema.value
       # Find attribute type from the attributes list, with validation to ensure it exists
       attribute_type = coalesce(
         try([for attr in local.attributes_final : attr.type if attr.name == key_schema.value][0], null),
-        "S" # Default to String if not found (for backward compatibility with placeholder)
+        "S" # Default to String if not found (for backward compatibility)
       )
       key_type = "RANGE"
     }
@@ -227,16 +217,16 @@ resource "aws_dynamodb_global_secondary_index" "default" {
 
   # Projection configuration
   projection {
-    projection_type    = local.gsi_list_for_resource[count.index].projection_type
-    non_key_attributes = lookup(local.gsi_list_for_resource[count.index], "non_key_attributes", null)
+    projection_type    = each.value.projection_type
+    non_key_attributes = lookup(each.value, "non_key_attributes", null)
   }
 
   # Provisioned throughput (for PROVISIONED billing mode)
   dynamic "provisioned_throughput" {
-    for_each = var.billing_mode == "PROVISIONED" && (lookup(local.gsi_list_for_resource[count.index], "read_capacity", null) != null || lookup(local.gsi_list_for_resource[count.index], "write_capacity", null) != null) ? [1] : []
+    for_each = var.billing_mode == "PROVISIONED" && (lookup(each.value, "read_capacity", null) != null || lookup(each.value, "write_capacity", null) != null) ? [1] : []
     content {
-      read_capacity_units  = lookup(local.gsi_list_for_resource[count.index], "read_capacity", null)
-      write_capacity_units = lookup(local.gsi_list_for_resource[count.index], "write_capacity", null)
+      read_capacity_units  = lookup(each.value, "read_capacity", null)
+      write_capacity_units = lookup(each.value, "write_capacity", null)
     }
   }
 
