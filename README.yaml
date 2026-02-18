@@ -190,12 +190,18 @@ usage: |2-
   This module now supports the experimental `aws_dynamodb_global_secondary_index` resource introduced in AWS Provider 6.28.0.
   This resource allows you to manage Global Secondary Indexes independently from the main table resource.
 
-  **⚠️ WARNING:** 
-  - This is an **EXPERIMENTAL** feature that requires setting the environment variable `TF_AWS_EXPERIMENT_dynamodb_global_secondary_index`
+  **⚠️ IMPORTANT:**
+  - This is an **EXPERIMENTAL** feature that requires setting the environment variable `TF_AWS_EXPERIMENT_dynamodb_global_secondary_index=1` **before running any Terraform commands** (init, plan, apply, validate, etc.)
   - Do NOT toggle `global_secondary_index_resource_enabled` on an existing table, as this will cause Terraform to recreate the indexes
   - This feature is not covered by any SLA or support agreement and may not be suitable for production workloads
+  - The experimental resource may change or be removed in future AWS provider versions
 
-  To use the standalone resource, set `global_secondary_index_resource_enabled = true`. The module will use the same `global_secondary_index_map` variable but create standalone resources instead of inline blocks:
+  To use the standalone resource:
+
+  1. Set the environment variable: `export TF_AWS_EXPERIMENT_dynamodb_global_secondary_index=1`
+  2. Set `global_secondary_index_resource_enabled = true` in your module configuration
+
+  The module will use the same `global_secondary_index_map` variable but create standalone resources instead of inline blocks:
 
   ```hcl
   module "dynamodb_table" {

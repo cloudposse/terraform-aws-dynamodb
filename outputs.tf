@@ -34,6 +34,6 @@ output "table_stream_label" {
 }
 
 output "global_secondary_index_arns" {
-  value       = { for k, v in aws_dynamodb_global_secondary_index.default : k => v.arn }
+  value       = { for idx, gsi in aws_dynamodb_global_secondary_index.default : local.gsi_list_for_resource[idx].name => gsi.arn }
   description = "ARNs of DynamoDB Global Secondary Indexes created using the experimental resource (only populated when global_secondary_index_resource_enabled is true)"
 }
