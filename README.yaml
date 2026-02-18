@@ -68,7 +68,7 @@ description: |-
 
   ## Requirements
 
-  This module requires [AWS Provider](https://github.com/terraform-providers/terraform-provider-aws) `>= 4.22.0`
+  This module requires [AWS Provider](https://github.com/terraform-providers/terraform-provider-aws) `>= 6.28.0`
 # How to use this project
 usage: |2-
 
@@ -184,5 +184,58 @@ usage: |2-
   ```
 
   See [Terraform types and values](https://www.terraform.io/docs/configuration/expressions.html#types-and-values) for more details.
+
+  ## Experimental: Standalone Global Secondary Index Resource
+
+  This module now supports the experimental `aws_dynamodb_global_secondary_index` resource introduced in AWS Provider 6.28.0.
+  This resource allows you to manage Global Secondary Indexes independently from the main table resource.
+
+  **⚠️ WARNING:** 
+  - This is an **EXPERIMENTAL** feature that requires setting the environment variable `TF_AWS_EXPERIMENT_dynamodb_global_secondary_index`
+  - Do NOT toggle `global_secondary_index_resource_enabled` on an existing table, as this will cause Terraform to recreate the indexes
+  - This feature is not covered by any SLA or support agreement and may not be suitable for production workloads
+
+  To use the standalone resource, set `global_secondary_index_resource_enabled = true`. The module will use the same `global_secondary_index_map` variable but create standalone resources instead of inline blocks:
+
+  ```hcl
+  module "dynamodb_table" {
+    source = "cloudposse/dynamodb/aws"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version     = "x.x.x"
+    namespace                    = "eg"
+    stage                        = "dev"
+    name                         = "cluster"
+    hash_key                     = "HashKey"
+    range_key                    = "RangeKey"
+    enable_autoscaler            = true
+
+    # Enable the experimental standalone GSI resource
+    global_secondary_index_resource_enabled = true
+
+    dynamodb_attributes = [
+      {
+        name = "DailyAverage"
+        type = "N"
+      },
+      {
+        name = "HighWater"
+        type = "N"
+      }
+    ]
+
+    # Use the same global_secondary_index_map variable as before
+    global_secondary_index_map = [
+      {
+        name               = "DailyAverageIndex"
+        hash_key           = "DailyAverage"
+        range_key          = "HighWater"
+        write_capacity     = 5
+        read_capacity      = 5
+        projection_type    = "INCLUDE"
+        non_key_attributes = ["HashKey", "RangeKey"]
+      }
+    ]
+  }
+  ```
 include: []
 contributors: []

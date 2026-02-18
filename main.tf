@@ -83,7 +83,7 @@ resource "aws_dynamodb_table" "default" {
   }
 
   dynamic "global_secondary_index" {
-    for_each = var.global_secondary_index_map
+    for_each = var.global_secondary_index_resource_enabled ? [] : var.global_secondary_index_map
     content {
       hash_key           = global_secondary_index.value.hash_key
       name               = global_secondary_index.value.name
@@ -168,4 +168,55 @@ module "dynamodb_autoscaler" {
   autoscale_max_write_capacity = var.autoscale_max_write_capacity
 
   context = module.this.context
+}
+
+# Experimental aws_dynamodb_global_secondary_index resource
+# This resource is only created when global_secondary_index_resource_enabled is set to true
+# It uses the same global_secondary_index_map variable but creates standalone resources instead of inline blocks
+# WARNING: Do NOT toggle this flag on an existing table as it will cause Terraform to recreate the indexes
+# See: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_global_secondary_index
+resource "aws_dynamodb_global_secondary_index" "default" {
+  for_each = local.enabled && var.global_secondary_index_resource_enabled ? { for idx in var.global_secondary_index_map : idx.name => idx } : {}
+
+  table_name = join("", aws_dynamodb_table.default[*].name)
+  index_name = each.value.name
+
+  # Key schema blocks must all be dynamic to handle both hash and range keys properly
+  dynamic "key_schema" {
+    for_each = [each.value.hash_key]
+    content {
+      attribute_name = each.value.hash_key
+      attribute_type = try([for attr in local.attributes_final : attr.type if attr.name == each.value.hash_key][0], "S")
+      key_type       = "HASH"
+    }
+  }
+
+  # Key schema for range key (if provided)
+  dynamic "key_schema" {
+    for_each = lookup(each.value, "range_key", null) != null && lookup(each.value, "range_key", "") != "" ? [1] : []
+    content {
+      attribute_name = each.value.range_key
+      attribute_type = try([for attr in local.attributes_final : attr.type if attr.name == each.value.range_key][0], "S")
+      key_type       = "RANGE"
+    }
+  }
+
+  # Projection configuration
+  projection {
+    projection_type    = each.value.projection_type
+    non_key_attributes = lookup(each.value, "non_key_attributes", null)
+  }
+
+  # Provisioned throughput (for PROVISIONED billing mode)
+  dynamic "provisioned_throughput" {
+    for_each = var.billing_mode == "PROVISIONED" && (lookup(each.value, "read_capacity", null) != null || lookup(each.value, "write_capacity", null) != null) ? [1] : []
+    content {
+      read_capacity_units  = lookup(each.value, "read_capacity", null)
+      write_capacity_units = lookup(each.value, "write_capacity", null)
+    }
+  }
+
+  lifecycle {
+    create_before_destroy = false
+  }
 }

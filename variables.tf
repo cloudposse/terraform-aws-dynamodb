@@ -208,3 +208,17 @@ variable "import_table" {
   default     = null
   description = "Import Amazon S3 data into a new table."
 }
+
+variable "global_secondary_index_resource_enabled" {
+  type        = bool
+  default     = false
+  description = <<-EOT
+    Set to `true` to use the experimental `aws_dynamodb_global_secondary_index` resource instead of the inline `global_secondary_index` block.
+    
+    When enabled, the `global_secondary_index_map` variable will be used to create standalone `aws_dynamodb_global_secondary_index` resources instead of inline blocks.
+    
+    **WARNING:** Do NOT change this value on an existing table with Global Secondary Indexes already created. This will cause Terraform to attempt to recreate the indexes.
+    
+    This feature requires AWS Provider version >= 6.28.0 and the environment variable `TF_AWS_EXPERIMENT_dynamodb_global_secondary_index` must be set.
+    EOT
+}

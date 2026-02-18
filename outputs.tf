@@ -32,3 +32,8 @@ output "table_stream_label" {
   value       = join("", aws_dynamodb_table.default[*].stream_label)
   description = "DynamoDB table stream label"
 }
+
+output "global_secondary_index_arns" {
+  value       = { for k, v in aws_dynamodb_global_secondary_index.default : k => v.arn }
+  description = "ARNs of DynamoDB Global Secondary Indexes created using the experimental resource (only populated when global_secondary_index_resource_enabled is true)"
+}
