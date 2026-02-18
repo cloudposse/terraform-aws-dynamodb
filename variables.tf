@@ -213,7 +213,7 @@ variable "global_secondary_index_resource_enabled" {
   type        = bool
   default     = false
   description = <<-EOT
-    **EXPERIMENTAL FEATURE** - Set to `true` to use the experimental `aws_dynamodb_global_secondary_index` resource instead of the inline `global_secondary_index` block.
+    **EXPERIMENTAL FEATURE** - Set to `true` to use the experimental `aws_dynamodb_global_secondary_index` resource (defined in `experimental.tf`) instead of the inline `global_secondary_index` block.
     
     When enabled, the `global_secondary_index_map` variable will be used to create standalone `aws_dynamodb_global_secondary_index` resources instead of inline blocks.
     
@@ -224,6 +224,8 @@ variable "global_secondary_index_resource_enabled" {
     ```
     This must be set before running ANY Terraform commands (init, plan, apply, validate, etc.), otherwise validation will fail.
     
+    **Why is this required?** Terraform loads all `.tf` files (including `experimental.tf`) and AWS provider validates experimental resources even when disabled.
+    
     **WARNINGS:** 
     - Do NOT change this value on an existing table with Global Secondary Indexes. This will cause Terraform to recreate the indexes.
     - This is an EXPERIMENTAL AWS provider feature that may change or be removed without notice.
@@ -231,5 +233,6 @@ variable "global_secondary_index_resource_enabled" {
     - Not suitable for production workloads.
     
     Requires AWS Provider >= 6.28.0.
+    See `experimental.tf` for implementation details.
     EOT
 }

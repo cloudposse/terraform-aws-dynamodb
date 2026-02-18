@@ -74,12 +74,23 @@ description: |-
 
   The AWS provider minimum version has been updated from `4.59` to `6.28.0`. Review the [AWS Provider 5.x](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/guides/version-5-upgrade) and [6.x upgrade guides](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/guides/version-6-upgrade) for any breaking changes that may affect your infrastructure.
 
-  **IMPORTANT:** Due to the inclusion of experimental AWS provider features, all users must set the following environment variable before running Terraform:
+  ### Experimental Features Requirement
+
+  **IMPORTANT:** This module includes experimental AWS provider features (in `experimental.tf`). **ALL users** (even those NOT using experimental features) must set the following environment variable before running Terraform:
+  
   ```bash
   export TF_AWS_EXPERIMENT_dynamodb_global_secondary_index=1
   ```
   
-  This is required even if you're not using the experimental `global_secondary_index_resource_enabled` feature. This is a temporary requirement due to AWS provider limitations with experimental resources.
+  **Why is this required for everyone?**
+  - Terraform loads all `.tf` files in a directory, including `experimental.tf`
+  - AWS provider validates experimental resources even when `for_each = {}` (no instances created)
+  - This is a known AWS provider limitation when the feature is disabled by default
+  
+  **Note:** Moving the experimental resource to a separate file (`experimental.tf`) improves organization but does NOT eliminate the environment variable requirement. The only ways to avoid this would be:
+  1. Remove experimental features entirely (not desired)
+  2. Create a separate optional module (more complex)
+  3. Wait for AWS provider to fix the validation behavior
 # How to use this project
 usage: |2-
 
