@@ -138,7 +138,7 @@ resource "aws_dynamodb_table" "default" {
       # If kms_key_arn is null, the provider uses the default key
       kms_key_arn            = null
       propagate_tags         = false
-      point_in_time_recovery = false
+      point_in_time_recovery = var.enable_point_in_time_recovery
     }
   }
 
